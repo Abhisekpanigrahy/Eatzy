@@ -5,8 +5,12 @@
     padding: 8px 4%;
 }
 .navbar .logo{
-    width: 80px;
-    border-radius: 8px;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.6);
+    border-radius: 10px;
 }
 .navbar .profile{
     width: 40px;

@@ -6,14 +6,17 @@
 }
 
 .navbar .logo {
-    width: 100px;
-    height: auto;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.6);
     border-radius: 12px;
     transition: 0.3s;
 }
 
 .navbar .logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.7);
 }
 
 .navbar-menu {
@@ -214,7 +217,8 @@
 
 @media (max-width:1050px) {
     .navbar .logo {
-        width: 90px;
+        width: 55px;
+        height: 55px;
     }
 
     .navbar-menu {
@@ -237,7 +241,8 @@
 
 @media (max-width:900px) {
     .navbar .logo {
-        width: 80px;
+        width: 50px;
+        height: 50px;
     }
 
     .navbar-menu {

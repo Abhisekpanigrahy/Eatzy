@@ -41,7 +41,7 @@ const Navbar = () => {
 
   return (
     <div className='navbar'>
-      <Link to='/'><img className='logo' src={assets.logo} alt="" /></Link>
+      <Link to='/' className='logo'>Eatzy<span>.</span></Link>
       <ul className="navbar-menu">
         <Link to="/" className={isActive('/')}>home</Link>
         <Link to="/menu" className={isActive('/menu')}>menu</Link>

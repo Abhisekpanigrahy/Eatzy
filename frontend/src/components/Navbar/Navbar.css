@@ -6,17 +6,15 @@
 }
 
 .navbar .logo {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    object-position: center;
-    transform: scale(1.6);
-    border-radius: 12px;
-    transition: 0.3s;
+    font-size: 32px;
+    font-weight: 800;
+    color: #49557E;
+    text-decoration: none;
+    letter-spacing: -1px;
 }
 
-.navbar .logo:hover {
-    transform: scale(1.7);
+.navbar .logo span {
+    color: #FF4C24;
 }
 
 .navbar-menu {
@@ -217,8 +215,7 @@
 
 @media (max-width:1050px) {
     .navbar .logo {
-        width: 55px;
-        height: 55px;
+        font-size: 28px;
     }
 
     .navbar-menu {
@@ -241,8 +238,7 @@
 
 @media (max-width:900px) {
     .navbar .logo {
-        width: 50px;
-        height: 50px;
+        font-size: 24px;
     }
 
     .navbar-menu {

@@ -22,7 +22,11 @@ connectDB()
 // api endpoints
 app.use("/api/user", userRouter)
 app.use("/api/food", foodRouter)
-app.use("/images",express.static('uploads'))
+
+// Serve images from uploads folder or /tmp if on Vercel
+const uploadPath = process.env.VERCEL ? '/tmp' : 'uploads';
+app.use("/images", express.static(uploadPath))
+
 app.use("/api/cart", cartRouter)
 app.use("/api/order",orderRouter)
 

@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+:root {
+  --brand-color: #FF4C24;
+  --text-dark: #49557E;
+}
+
 *{
   padding: 0;
   margin: 0;

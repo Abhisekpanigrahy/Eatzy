@@ -20,7 +20,7 @@
     padding: 10px;
     border: 1px solid #C5C5C5;
     border-radius: 4px;
-    outline-color: tomato;
+    outline-color: var(--brand-color);
 }
 .place-order-left .multi-field{
     display: flex;
@@ -33,7 +33,7 @@
 .place-order-submit{
     margin-top: 50px;
     border: none;
-    background-color: tomato;
+    background-color: var(--brand-color);
     color: white;
     padding: 12px 30px;
     border-radius: 4px;

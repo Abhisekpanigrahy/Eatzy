@@ -29,7 +29,13 @@
     max-width: 120px;
     border: none;
     padding: 10px;
-    background-color: black;
+    background-color: var(--brand-color);
     color: white;
     cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #e54420;
 }

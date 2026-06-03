@@ -18,6 +18,12 @@ const Navbar = () => {
 
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   const filteredSearch = food_list.filter(item =>
     searchQuery && item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -42,7 +48,23 @@ const Navbar = () => {
   return (
     <div className='navbar'>
       <Link to='/' className='logo'>Eatzy<span>.</span></Link>
-      <ul className="navbar-menu">
+
+      {/* Hamburger button – visible only on mobile */}
+      <button
+        className={`navbar-hamburger ${menuOpen ? "open" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle navigation menu"
+        aria-expanded={menuOpen}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      {/* Mobile overlay */}
+      {menuOpen && <div className="navbar-overlay" onClick={() => setMenuOpen(false)} />}
+
+      <ul className={`navbar-menu ${menuOpen ? "navbar-menu-open" : ""}`}>
         <Link to="/" className={isActive('/')}>home</Link>
         <Link to="/menu" className={isActive('/menu')}>menu</Link>
         <Link to="/mobile-app" className={isActive('/mobile-app')}>mobile app</Link>

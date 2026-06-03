@@ -44,6 +44,12 @@ a {
   }
 }
 
+@media (max-width:600px) {
+  .app {
+    width: 95%;
+  }
+}
+
 .loader {
   width: 25px;
   height: 25px;

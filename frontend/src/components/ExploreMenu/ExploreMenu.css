@@ -61,3 +61,22 @@
         font-size: 14px;
     }
 }
+
+@media (max-width:600px) {
+    .explore-menu h1 {
+        font-size: 22px;
+    }
+
+    .explore-menu-list-item img {
+        width: 70px;
+        min-width: 60px;
+    }
+
+    .explore-menu-list-item p {
+        font-size: 13px;
+    }
+
+    .explore-menu-list {
+        gap: 15px;
+    }
+}

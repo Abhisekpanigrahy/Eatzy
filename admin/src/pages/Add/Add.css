@@ -39,3 +39,46 @@
 .add-btn:hover {
     background-color: #e54420;
 }
+
+@media (max-width:900px) {
+    .add {
+        width: 85%;
+    }
+
+    .add-product-name, .add-product-description {
+        width: 100%;
+    }
+}
+
+@media (max-width:600px) {
+    .add {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 25px;
+        padding: 0 15px;
+    }
+
+    .add-product-name, .add-product-description {
+        width: 100%;
+    }
+
+    .add-product-name input, .add-product-description textarea {
+        width: 100%;
+    }
+
+    .add-category-price {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .add-category-price select, .add-category-price input {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .add-btn {
+        max-width: 100%;
+        width: 100%;
+        padding: 12px;
+    }
+}

@@ -45,3 +45,24 @@
         flex-direction: column;
     }
 }
+
+@media (max-width:500px) {
+    .place-order {
+        margin: 60px 0;
+    }
+
+    .place-order-left .title {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+
+    .place-order-left, .place-order-right {
+        max-width: 100%;
+    }
+
+    .place-order-submit {
+        width: 100%;
+        padding: 14px;
+        margin-top: 30px;
+    }
+}

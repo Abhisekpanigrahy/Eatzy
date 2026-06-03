@@ -113,3 +113,14 @@
         align-items: stretch;
     }
 }
+
+@media (max-width: 500px) {
+    .menu-list {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .menu-filters {
+        padding: 15px;
+    }
+}

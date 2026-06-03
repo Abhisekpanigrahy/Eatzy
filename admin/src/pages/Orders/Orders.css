@@ -40,3 +40,25 @@
         width: 40px;
     }
 }
+
+@media(max-width:600px) {
+    .order-item {
+        grid-template-columns: 40px 1fr;
+        row-gap: 8px;
+        padding: 12px 10px;
+        gap: 10px;
+    }
+
+    .order-item img {
+        grid-row: 1 / 3;
+        align-self: start;
+        width: 35px;
+    }
+
+    .order-item select {
+        width: 100%;
+        max-width: 100%;
+        padding: 8px;
+        grid-column: 1 / -1;
+    }
+}

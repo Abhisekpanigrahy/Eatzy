@@ -80,3 +80,25 @@
         padding: 2vw 4vw;
     }
 }
+
+@media(max-width:500px) {
+    .header {
+        height: 55vw;
+        min-height: 200px;
+    }
+
+    .header-contents {
+        max-width: 80%;
+        gap: 10px;
+        bottom: 10%;
+    }
+
+    .header-contents h2 {
+        font-size: 22px;
+    }
+
+    .header-contents button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}

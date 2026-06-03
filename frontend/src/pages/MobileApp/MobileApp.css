@@ -288,3 +288,33 @@
         height: 440px;
     }
 }
+
+@media (max-width: 600px) {
+    .mobile-app-hero h1 {
+        font-size: 28px;
+    }
+
+    .mobile-app-hero p {
+        font-size: 15px;
+    }
+
+    .mobile-app-download {
+        padding: 40px 15px;
+        border-radius: 25px;
+        gap: 40px;
+    }
+
+    .phone-frame {
+        width: 180px;
+        height: 370px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .feature-card {
+        padding: 35px 20px;
+    }
+}

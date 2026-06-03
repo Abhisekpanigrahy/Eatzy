@@ -47,6 +47,7 @@ const Navbar = () => {
         <Link to="/menu" className={isActive('/menu')}>menu</Link>
         <Link to="/mobile-app" className={isActive('/mobile-app')}>mobile app</Link>
         <Link to="/contact-us" className={isActive('/contact-us')}>contact us</Link>
+        <a href={import.meta.env.VITE_ADMIN_URL || "http://localhost:5174"} target='_blank' rel='noreferrer' className="navbar-admin-btn">admin panel</a>
       </ul>
       <div className="navbar-right">
         <div className={`navbar-search-container ${showSearch ? "active" : ""}`}>

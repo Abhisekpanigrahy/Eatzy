@@ -36,6 +36,22 @@
     cursor: pointer;
 }
 
+.navbar-admin-btn {
+    border: 1px solid var(--brand-color);
+    padding: 6px 15px;
+    border-radius: 50px;
+    color: var(--brand-color) !important;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navbar-admin-btn:hover {
+    background-color: var(--brand-color);
+    color: white !important;
+    border-color: var(--brand-color);
+}
+
 .navbar-right {
     display: flex;
     align-items: center;

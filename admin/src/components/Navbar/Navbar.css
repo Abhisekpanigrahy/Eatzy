@@ -7,12 +7,12 @@
 .navbar .logo{
     font-size: 28px;
     font-weight: 800;
-    color: #49557E;
+    color: #FF4C24;
     letter-spacing: -1px;
 }
 
 .navbar .logo span {
-    color: #FF4C24;
+    color: #49557E;
 }
 .navbar .profile{
     width: 40px;

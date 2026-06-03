@@ -23,12 +23,12 @@
 .footer-logo {
     font-size: 32px;
     font-weight: 800;
-    color: white;
+    color: #FF4C24;
     letter-spacing: -1px;
 }
 
 .footer-logo span {
-    color: #FF4C24;
+    color: white;
 }
 .footer-content-left ul li, .footer-content-center ul li, .footer-content-right ul li{
     margin-bottom: 10px;

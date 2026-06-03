@@ -8,13 +8,13 @@
 .navbar .logo {
     font-size: 32px;
     font-weight: 800;
-    color: #49557E;
+    color: #FF4C24;
     text-decoration: none;
     letter-spacing: -1px;
 }
 
 .navbar .logo span {
-    color: #FF4C24;
+    color: #49557E;
 }
 
 .navbar-menu {

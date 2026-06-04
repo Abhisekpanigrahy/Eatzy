@@ -67,12 +67,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
-    OrderPollingService.stop();
-    await removeToken();
+  const logout = () => {
+    // Update state immediately for instant UI response
     setTokenState(null);
     setUser(null);
     setError(null);
+    
+    // Perform cleanup in background
+    OrderPollingService.stop();
+    removeToken().catch(() => {});
   };
 
   return (

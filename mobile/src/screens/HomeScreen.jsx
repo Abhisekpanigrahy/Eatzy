@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -7,28 +7,37 @@ import {
   TouchableOpacity,
   View,
   StatusBar,
+  Alert,
+  Image,
 } from 'react-native';
+import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import apiClient         from '../api/apiClient';
 import ErrorState        from '../components/ErrorState';
 import FavoritesSection  from '../components/FavoritesSection';
 import FoodCard          from '../components/FoodCard';
 import LoadingSpinner    from '../components/LoadingSpinner';
 import PromoBanner       from '../components/PromoBanner';
 import { useFoods }      from '../context/FoodContext';
+import { useAuth }       from '../context/AuthContext';
 
 /* ─── Premium Header ────────────────────────────────────────────────────── */
-const HomeHeader = ({ searchQuery, setSearchQuery }) => (
+const HomeHeader = ({ searchQuery, setSearchQuery, address, onProfilePress, profileImage }) => (
   <View style={styles.headerContainer}>
     <View style={styles.locationRow}>
-      <View>
+      <View style={{ flex: 1 }}>
         <Text style={styles.deliveryLabel}>Delivery to</Text>
         <View style={styles.addressRow}>
-          <Text style={styles.addressText}>Your Home, Surat</Text>
+          <Text style={styles.addressText} numberOfLines={1}>{address || 'Fetching location...'}</Text>
           <Text style={styles.downArrow}>▼</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.profileIconWrap}>
-        <Text style={styles.profileEmoji}>👤</Text>
+      <TouchableOpacity style={styles.profileIconWrap} onPress={onProfilePress}>
+        {profileImage ? (
+          <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        ) : (
+          <Text style={styles.profileEmoji}>👤</Text>
+        )}
       </TouchableOpacity>
     </View>
 
@@ -42,8 +51,6 @@ const HomeHeader = ({ searchQuery, setSearchQuery }) => (
         onChangeText={setSearchQuery}
         returnKeyType="search"
       />
-      <View style={styles.searchDivider} />
-      <Text style={styles.micIcon}>🎙️</Text>
     </View>
   </View>
 );
@@ -64,8 +71,55 @@ const NewsletterStrip = ({ onPress }) => (
 /* ─── Main screen ────────────────────────────────────────────────────────── */
 const HomeScreen = ({ navigation }) => {
   const { foods, loading, error, retryFetch } = useFoods();
+  const { token } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
+  const [address, setAddress] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    if (token) {
+      apiClient.get('/api/user/profile')
+        .then((res) => {
+          if (res.data.success) {
+            setProfileImage(res.data.data.image);
+          }
+        })
+        .catch(() => {});
+    } else {
+      setProfileImage(null);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setAddress('Permission denied');
+        return;
+      }
+
+      try {
+        let location = await Location.getCurrentPositionAsync({});
+        let reverseGeocode = await Location.reverseGeocodeAsync({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+
+        if (reverseGeocode.length > 0) {
+          const addr = reverseGeocode[0];
+          const parts = [
+            addr.name || addr.street,
+            addr.city || addr.subregion || addr.district
+          ].filter(Boolean);
+          setAddress(parts.join(', ') || 'Unknown Location');
+        }
+      } catch (err) {
+        console.error(err);
+        setAddress('Surat, India'); // Fallback
+      }
+    })();
+  }, []);
 
   const filteredFoods = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -79,6 +133,13 @@ const HomeScreen = ({ navigation }) => {
 
   const handleLoginRequired = () => navigation.navigate('Login');
   const handleFoodPress     = (item) => navigation.navigate('FoodDetail', { item });
+  const handleProfilePress  = () => {
+    if (token) {
+      navigation.navigate('ProfileTab');
+    } else {
+      navigation.navigate('Login');
+    }
+  };
 
   if (loading) return <LoadingSpinner />;
   if (error)   return <ErrorState message={error} onRetry={retryFetch} />;
@@ -95,7 +156,13 @@ const HomeScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View>
-            <HomeHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <HomeHeader 
+              searchQuery={searchQuery} 
+              setSearchQuery={setSearchQuery} 
+              address={address}
+              onProfilePress={handleProfilePress}
+              profileImage={profileImage}
+            />
 
             <PromoBanner
               onCategoryPress={(cat) => navigation.navigate('MenuTab', { screen: 'MenuMain', params: { category: cat } })}
@@ -176,6 +243,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#e5e7eb',
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
   },
   profileEmoji: {
     fontSize: 20,
@@ -204,16 +277,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#2d2d2d',
     height: '100%',
-  },
-  searchDivider: {
-    width: 1,
-    height: 20,
-    backgroundColor: '#e5e7eb',
-    marginHorizontal: 12,
-  },
-  micIcon: {
-    fontSize: 18,
-    color: '#FF4C24',
   },
 
   /* Newsletter */

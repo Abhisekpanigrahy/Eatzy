@@ -116,4 +116,24 @@ const updateStatus = async (req, res) => {
     }
 };
 
-export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus };
+// Post Review for an Order
+const reviewOrder = async (req, res) => {
+    try {
+        const { orderId, rating, comment, userName, userImage } = req.body;
+        const user = await userModel.findById(req.body.userId);
+        
+        await orderModel.findByIdAndUpdate(orderId, {
+            reviewed: true,
+            rating,
+            comment,
+            userName:  userName  || user?.name  || "Anonymous",
+            userImage: userImage || user?.image || ""
+        });
+        res.json({ success: true, message: "Review submitted" });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Error submitting review" });
+    }
+};
+
+export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus, reviewOrder };

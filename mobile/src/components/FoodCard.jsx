@@ -40,26 +40,7 @@ const FoodCard = ({ item, onPress, onLoginRequired }) => {
         
         {/* Rating Badge */}
         <View style={styles.ratingBadge}>
-          <Text style={styles.ratingText}>4.2 ★</Text>
-        </View>
-
-        {/* Add / quantity counter */}
-        <View style={styles.actionContainer}>
-          {qty === 0 ? (
-            <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
-              <Text style={styles.addBtnText}>ADD</Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={styles.counter}>
-              <TouchableOpacity onPress={handleRemove} style={styles.counterAction}>
-                <Text style={styles.counterBtn}>−</Text>
-              </TouchableOpacity>
-              <Text style={styles.counterQty}>{qty}</Text>
-              <TouchableOpacity onPress={handleAdd} style={styles.counterAction}>
-                <Text style={styles.counterBtn}>+</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          <Text style={styles.ratingText}>{item.averageRating || '0.0'} ★</Text>
         </View>
       </View>
       <View style={styles.info}>
@@ -68,8 +49,29 @@ const FoodCard = ({ item, onPress, onLoginRequired }) => {
         </View>
         <Text style={styles.desc} numberOfLines={1}>{item.description}</Text>
         <View style={styles.priceRow}>
-          <Text style={styles.price}>${item.price}</Text>
-          <Text style={styles.timeText}>• 25 mins</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.price}>${item.price}</Text>
+            <Text style={styles.timeText}>• 25 mins</Text>
+          </View>
+          
+          {/* Add / quantity counter */}
+          <View style={styles.actionContainer}>
+            {qty === 0 ? (
+              <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
+                <Text style={styles.addBtnText}>ADD</Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.counter}>
+                <TouchableOpacity onPress={handleRemove} style={styles.counterAction}>
+                  <Text style={styles.counterBtn}>−</Text>
+                </TouchableOpacity>
+                <Text style={styles.counterQty}>{qty}</Text>
+                <TouchableOpacity onPress={handleAdd} style={styles.counterAction}>
+                  <Text style={styles.counterBtn}>+</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -127,62 +129,54 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   actionContainer: {
-    position: 'absolute',
-    bottom: -12,
-    alignSelf: 'center',
-    width: '70%',
+    width: 70,
   },
   addBtn: {
     backgroundColor: '#fff',
-    height: 32,
-    borderRadius: 8,
+    height: 30,
+    borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#FF4C24',
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   addBtnText: {
     color: '#FF4C24',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '800',
   },
   counter: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    height: 32,
-    borderRadius: 8,
+    height: 30,
+    borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    borderColor: '#FF4C24',
   },
   counterAction: {
-    width: 30,
+    width: 24,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   counterBtn: {
     color: '#FF4C24',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
   },
   counterQty: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '800',
     color: '#2d2d2d',
   },
   info: {
     padding: 12,
-    paddingTop: 18,
   },
   nameRow: {
     flexDirection: 'row',

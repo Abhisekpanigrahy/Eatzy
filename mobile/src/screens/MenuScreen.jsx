@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   FlatList,
   ScrollView,
@@ -15,6 +15,7 @@ import { useFoods } from '../context/FoodContext';
 
 const MenuScreen = ({ navigation, route }) => {
   const { foods, loading, error, retryFetch } = useFoods();
+  const [searchQuery, setSearchQuery] = useState('');
   const insets = useSafeAreaInsets();
 
   // Derive unique categories
@@ -23,8 +24,14 @@ const MenuScreen = ({ navigation, route }) => {
     return ['All', ...cats];
   }, [foods]);
 
-  const initialCategory = route?.params?.category || 'All';
-  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  // Sync activeCategory with route params when they change
+  useEffect(() => {
+    if (route?.params?.category) {
+      setActiveCategory(route.params.category);
+    }
+  }, [route?.params?.category]);
 
   const filteredFoods = useMemo(() => {
     if (activeCategory === 'All') return foods;
@@ -40,7 +47,7 @@ const MenuScreen = ({ navigation, route }) => {
   return (
     <View style={[styles.safe, { paddingTop: insets.top }]}>
       {/* Category filter bar */}
-      <View style={styles.filterBar}>
+      <View style={[styles.filterBar, { marginTop: 10 }]}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -93,7 +100,8 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#FFF' },
   filterBar: {
     backgroundColor: '#fff',
-    paddingVertical: 12,
+    paddingTop: 16,
+    paddingBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#f3f4f6',
   },

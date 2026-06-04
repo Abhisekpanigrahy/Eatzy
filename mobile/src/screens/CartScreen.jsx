@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BackArrow from '../components/BackArrow';
 import { getFoodImageUrl } from '../api/foodApi';
 import { useCart } from '../context/CartContext';
 import { useFoods } from '../context/FoodContext';
@@ -53,7 +54,7 @@ const CartScreen = ({ navigation }) => {
     <View style={[styles.safe, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backIcon}>←</Text>
+          <BackArrow />
         </TouchableOpacity>
         <View>
           <Text style={styles.headerTitle}>My Cart</Text>
@@ -76,7 +77,7 @@ const CartScreen = ({ navigation }) => {
             <Text style={styles.emptySub}>Looks like you haven't added anything to your cart yet.</Text>
             <TouchableOpacity 
               style={styles.browseBtn}
-              onPress={() => navigation.navigate('HomeTab')}
+              onPress={() => navigation.navigate('MenuTab')}
             >
               <Text style={styles.browseBtnText}>Browse Menu</Text>
             </TouchableOpacity>
@@ -152,17 +153,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f3f4f6',
   },
   backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f3f4f6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+    paddingVertical: 10,
+    paddingRight: 20,
   },
-  backIcon: { fontSize: 20, color: '#1a1a1a', fontWeight: 'bold' },
   headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
-  headerSub: { fontSize: 13, color: '#6b7280', fontWeight: '600' },
+  headerSub: { fontSize: 13, color: '#9ca3af', fontWeight: '700' },
 
   list: { padding: 16 },
   itemRow: {

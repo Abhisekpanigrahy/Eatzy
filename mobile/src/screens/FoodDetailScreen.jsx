@@ -18,6 +18,7 @@ import { getFoodImageUrl } from '../api/foodApi';
 import { useAuth }         from '../context/AuthContext';
 import { useCart }         from '../context/CartContext';
 import { useFavorites }    from '../context/FavoritesContext';
+import BackArrow from '../components/BackArrow';
 
 /* ── star rating picker ─────────────────────────────────────────── */
 const StarPicker = ({ value, onChange }) => (
@@ -31,25 +32,37 @@ const StarPicker = ({ value, onChange }) => (
 );
 
 /* ── single review card ─────────────────────────────────────────── */
-const ReviewCard = ({ review }) => (
-  <View style={styles.reviewCard}>
-    <View style={styles.reviewHeader}>
-      <View style={styles.reviewAvatar}>
-        <Text style={styles.avatarText}>{review.userName?.charAt(0) || 'A'}</Text>
+const ReviewCard = ({ review }) => {
+  const formatDateWithTime = (dateStr) => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  return (
+    <View style={styles.reviewCard}>
+      <View style={styles.reviewHeader}>
+        <View style={styles.reviewAvatar}>
+          {review.userImage ? (
+            <Image source={{ uri: review.userImage }} style={styles.avatarImgSmall} />
+          ) : (
+            <Text style={styles.avatarTextSmall}>{review.userName?.charAt(0) || 'A'}</Text>
+          )}
+        </View>
+        <View style={styles.reviewInfo}>
+          <Text style={styles.reviewUser}>{review.userName || 'Customer'}</Text>
+          <Text style={styles.reviewDate}>
+            {formatDateWithTime(review.date)}
+          </Text>
+        </View>
+        <View style={styles.reviewRatingBadge}>
+          <Text style={styles.badgeStars}>{review.rating} ★</Text>
+        </View>
       </View>
-      <View style={styles.reviewInfo}>
-        <Text style={styles.reviewUser}>{review.userName || 'Anonymous'}</Text>
-        <Text style={styles.reviewDate}>
-          {review.date ? new Date(review.date).toLocaleDateString() : ''}
-        </Text>
-      </View>
-      <View style={styles.reviewRatingBadge}>
-        <Text style={styles.badgeStars}>{review.rating} ★</Text>
-      </View>
+      <Text style={styles.reviewText}>{review.text}</Text>
     </View>
-    <Text style={styles.reviewText}>{review.text}</Text>
-  </View>
-);
+  );
+};
 
 /* ── main screen ─────────────────────────────────────────────────── */
 const FoodDetailScreen = ({ route, navigation }) => {
@@ -86,10 +99,11 @@ const FoodDetailScreen = ({ route, navigation }) => {
     setSubmitting(true);
     try {
       const res = await apiClient.post('/api/food/review', {
-        foodId:   item._id,
+        foodId: item._id,
         rating,
-        text:     reviewText.trim(),
-        userName: user?.name || 'You',
+        text: reviewText.trim(),
+        userName: user?.name,
+        userImage: user?.image,
       });
       if (res.data.success) {
         setReviews(res.data.data.reviews || []);
@@ -122,8 +136,8 @@ const FoodDetailScreen = ({ route, navigation }) => {
               resizeMode="cover"
             />
             <View style={[styles.headerOverlay, { paddingTop: insets.top || 20 }]}>
-              <TouchableOpacity style={styles.roundBtn} onPress={() => navigation.goBack()}>
-                <Text style={styles.btnIcon}>←</Text>
+              <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+                <BackArrow />
               </TouchableOpacity>
               <TouchableOpacity style={styles.roundBtn} onPress={() => toggleFavorite(item._id)}>
                 <Text style={styles.btnIcon}>{favorited ? '❤️' : '🤍'}</Text>
@@ -211,12 +225,12 @@ const FoodDetailScreen = ({ route, navigation }) => {
                 reviews.slice(0, 3).map((r, i) => <ReviewCard key={i} review={r} />)
               )}
             </View>
-            <View style={{ height: 120 }} />
+            <View style={{ height: 100 }} />
           </View>
         </ScrollView>
 
         {/* Floating Bottom Bar */}
-        <View style={[styles.bottomBar, { paddingBottom: insets.bottom > 0 ? insets.bottom + 10 : 20 }]}>
+        <View style={[styles.bottomBar, { paddingBottom: insets.bottom > 0 ? insets.bottom : 16 }]}>
           <View style={styles.priceContainer}>
             <Text style={styles.bottomPrice}>${item.price}</Text>
             <Text style={styles.taxLabel}>inclusive of all taxes</Text>
@@ -261,11 +275,21 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
-  btnIcon: { fontSize: 20, color: '#fff', fontWeight: 'bold' },
+  backBtn: {
+    paddingVertical: 10,
+    paddingRight: 20,
+  },
+  btnIcon: { fontSize: 20, color: '#FF4C24', fontWeight: 'bold' },
 
   content: { marginTop: -30, paddingHorizontal: 16 },
   mainCard: {
@@ -335,7 +359,7 @@ const styles = StyleSheet.create({
 
   reviewCard: {
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
@@ -343,25 +367,38 @@ const styles = StyleSheet.create({
   },
   reviewHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   reviewAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#fef2f2',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#FF4C24',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#fee2e2',
   },
-  avatarText: { color: '#FF4C24', fontWeight: 'bold' },
+  avatarImgSmall: {
+    width: '100%',
+    height: '100%',
+  },
+  avatarTextSmall: {
+    color: '#fff',
+    fontWeight: '900',
+    fontSize: 16,
+  },
   reviewInfo: { flex: 1 },
-  reviewUser: { fontSize: 14, fontWeight: '800', color: '#1a1a1a' },
-  reviewDate: { fontSize: 11, color: '#9ca3af', fontWeight: '600' },
+  reviewUser: { fontSize: 15, fontWeight: '900', color: '#1a1a1a' },
+  reviewDate: { fontSize: 11, color: '#9ca3af', fontWeight: '700', marginTop: 2 },
   reviewRatingBadge: {
-    backgroundColor: '#f3f4f6',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
+    backgroundColor: '#fef2f2',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fee2e2',
   },
-  badgeStars: { fontSize: 12, fontWeight: '800', color: '#2d7d32' },
+  badgeStars: { fontSize: 13, fontWeight: '900', color: '#FF4C24' },
   reviewText: { fontSize: 14, color: '#4b5563', lineHeight: 20, fontWeight: '500' },
 
   emptyReviews: { alignItems: 'center', padding: 24 },

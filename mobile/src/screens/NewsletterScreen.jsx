@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BackArrow from '../components/BackArrow';
 import apiClient from '../api/apiClient';
 
 const NewsletterScreen = ({ navigation }) => {
@@ -39,7 +40,7 @@ const NewsletterScreen = ({ navigation }) => {
     <View style={[styles.safe, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backIcon}>←</Text>
+          <BackArrow />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Newsletter</Text>
       </View>
@@ -125,15 +126,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f3f4f6',
   },
   backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f3f4f6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+    paddingVertical: 10,
+    paddingRight: 20,
   },
-  backIcon: { fontSize: 20, color: '#1a1a1a', fontWeight: 'bold' },
   headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
 
   container: { flex: 1, padding: 24, justifyContent: 'center' },
@@ -224,9 +219,11 @@ const styles = StyleSheet.create({
     padding: 40,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 8,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
   },
   successIconWrap: {
     width: 100,
@@ -248,13 +245,17 @@ const styles = StyleSheet.create({
   },
   highlight: { color: '#FF4C24', fontWeight: '800' },
   backHomeBtn: {
-    marginTop: 32,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#FF4C24',
     paddingHorizontal: 32,
     paddingVertical: 16,
     borderRadius: 16,
+    shadowColor: '#FF4C24',
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 4,
+    marginTop: 10,
   },
-  backHomeBtnText: { color: '#fff', fontWeight: '800', fontSize: 14 },
+  backHomeBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
 });
 
 export default NewsletterScreen;

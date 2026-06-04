@@ -1,4 +1,5 @@
 import foodModel from "../models/foodModel.js";
+import userModel from "../models/userModel.js";
 import { v2 as cloudinary } from "cloudinary";
 
 // helper: upload buffer to Cloudinary
@@ -111,15 +112,23 @@ const removeFood = async (req, res) => {
 // POST /api/food/review  (auth required)
 const addReview = async (req, res) => {
     try {
-        const { foodId, rating, text, userName } = req.body;
+        const { foodId, rating, text, userName, userImage } = req.body;
         const food = await foodModel.findById(foodId);
         if (!food) return res.json({ success: false, message: "Food not found" });
 
+        const user = await userModel.findById(req.body.userId);
+        
+        // Priority: Passed from frontend > Found in DB > Fallback
+        const finalName  = userName  || user?.name  || "Anonymous";
+        const finalImage = userImage || user?.image || "";
+
         const review = {
-            userId:   req.body.userId,
-            userName: userName || "Anonymous",
-            rating:   Number(rating),
+            userId:    req.body.userId,
+            userName:  finalName,
+            userImage: finalImage,
+            rating:    Number(rating),
             text,
+            date:      new Date(),
         };
         food.reviews.push(review);
         // Recalculate average

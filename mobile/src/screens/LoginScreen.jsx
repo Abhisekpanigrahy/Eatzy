@@ -11,16 +11,53 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../context/AuthContext';
+import BackArrow from '../components/BackArrow';
 
 const LoginScreen = ({ navigation }) => {
   const { login, error } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const insets = useSafeAreaInsets();
 
+  const validateForm = () => {
+    let tempErrors = {};
+    if (!email.trim()) {
+      tempErrors.email = 'Email address is required';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.trim())) {
+        tempErrors.email = 'Please enter a valid email address';
+      }
+    }
+
+    if (!password) {
+      tempErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+      tempErrors.password = 'Password must be at least 8 characters';
+    }
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleEmailChange = (val) => {
+    setEmail(val);
+    if (errors.email) {
+      setErrors((prev) => ({ ...prev, email: null }));
+    }
+  };
+
+  const handlePasswordChange = (val) => {
+    setPassword(val);
+    if (errors.password) {
+      setErrors((prev) => ({ ...prev, password: null }));
+    }
+  };
+
   const handleLogin = async () => {
-    if (!email.trim() || !password.trim()) return;
+    if (!validateForm()) return;
     setLoading(true);
     try {
       const success = await login(email.trim(), password);
@@ -34,6 +71,11 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={[styles.safe, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate('Splash')} style={styles.backBtn}>
+          <BackArrow />
+        </TouchableOpacity>
+      </View>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -58,37 +100,42 @@ const LoginScreen = ({ navigation }) => {
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Email Address</Text>
-              <View style={styles.inputWrapper}>
+              <View style={[styles.inputWrapper, errors.email && styles.inputWrapperError]}>
                 <Text style={styles.inputIcon}>📧</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="name@example.com"
                   placeholderTextColor="#9ca3af"
                   value={email}
-                  onChangeText={setEmail}
+                  onChangeText={handleEmailChange}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
                 />
               </View>
+              {errors.email ? <Text style={styles.fieldError}>{errors.email}</Text> : null}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Password</Text>
-              <View style={styles.inputWrapper}>
+              <View style={[styles.inputWrapper, errors.password && styles.inputWrapperError]}>
                 <Text style={styles.inputIcon}>🔒</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="••••••••"
                   placeholderTextColor="#9ca3af"
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={handlePasswordChange}
                   secureTextEntry
                 />
               </View>
+              {errors.password ? <Text style={styles.fieldError}>{errors.password}</Text> : null}
             </View>
 
-            <TouchableOpacity style={styles.forgotPass}>
+            <TouchableOpacity 
+              style={styles.forgotPass}
+              onPress={() => navigation.navigate('ForgotPassword')}
+            >
               <Text style={styles.forgotText}>Forgot Password?</Text>
             </TouchableOpacity>
 
@@ -116,9 +163,17 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#fff' },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+  },
+  backBtn: {
+    paddingVertical: 10,
+    paddingRight: 20,
+  },
   container: {
-    flexGrow: 1,
     padding: 24,
+    paddingTop: 10,
     justifyContent: 'center',
   },
   topSection: {
@@ -241,6 +296,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#FF4C24',
     fontWeight: '800',
+  },
+  inputWrapperError: {
+    borderColor: '#ef4444',
+    backgroundColor: '#fffbeb',
+  },
+  fieldError: {
+    color: '#ef4444',
+    fontSize: 12,
+    fontWeight: '700',
+    marginTop: 6,
+    marginLeft: 4,
   },
 });
 

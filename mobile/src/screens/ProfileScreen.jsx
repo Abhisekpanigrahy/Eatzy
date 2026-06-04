@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,9 +9,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import apiClient from '../api/apiClient';
 import { useAuth } from '../context/AuthContext';
+import { useOrders } from '../context/OrderContext';
+import { useFoods } from '../context/FoodContext';
 
 const MenuItem = ({ icon, label, onPress, danger }) => (
   <TouchableOpacity style={styles.menuItem} onPress={onPress} activeOpacity={0.7}>
@@ -24,9 +28,12 @@ const MenuItem = ({ icon, label, onPress, danger }) => (
 
 const ProfileScreen = ({ navigation }) => {
   const { user, logout } = useAuth();
-  const [profile, setProfile]   = useState({ name: '', phone: '', address: '' });
+  const { orders, fetchOrders } = useOrders();
+  const { foods } = useFoods();
+  const [profile, setProfile]   = useState({ name: '', phone: '', address: '', image: '' });
   const [editing, setEditing]   = useState(false);
   const [saving, setSaving]     = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
@@ -39,23 +46,96 @@ const ProfileScreen = ({ navigation }) => {
             name:    u.name    || '',
             phone:   u.phone   || '',
             address: u.address || '',
+            image:   u.image   || '',
           });
         }
       })
       .catch(() => {});
+    
+    // Fetch orders to get dynamic count
+    fetchOrders();
   }, []);
+
+  // Calculate dynamic stats
+  const totalOrders = orders.length;
+  const totalReviews = foods.reduce((count, food) => {
+    const userReviews = food.reviews?.filter(r => r.userId === user?.id) || [];
+    return count + userReviews.length;
+  }, 0);
+  // Using a simplified logic for favorites - counting foods with high ratings or just a mock count if not implemented
+  const totalFavs = foods.filter(f => f.averageRating >= 4.5).length;
+
+  const pickImage = async () => {
+    console.log('Pick image triggered');
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission denied', 'We need camera roll permissions to upload a photo.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: 'images',
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0]);
+    }
+  };
 
   const saveProfile = async () => {
     setSaving(true);
     try {
-      const res = await apiClient.post('/api/user/profile/update', profile);
+      let data;
+      let headers = {};
+
+      if (selectedImage) {
+        data = new FormData();
+        data.append('name', profile.name);
+        data.append('phone', profile.phone);
+        data.append('address', profile.address);
+        
+        const uri = selectedImage.uri;
+        const filename = uri.split('/').pop();
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : `image`;
+
+        data.append('image', {
+          uri,
+          name: filename,
+          type,
+        });
+      } else {
+        data = {
+          name:    profile.name,
+          phone:   profile.phone,
+          address: profile.address,
+        };
+      }
+
+      const res = await apiClient.post('/api/user/profile/update', data, { headers });
       if (res.data.success) {
         Alert.alert('Saved', 'Profile updated successfully.');
         setEditing(false);
+        setSelectedImage(null);
+        // Refresh profile to get the new image URL
+        const profileRes = await apiClient.get('/api/user/profile');
+        if (profileRes.data.success) {
+          const u = profileRes.data.data;
+          setProfile({
+            name:    u.name    || '',
+            phone:   u.phone   || '',
+            address: u.address || '',
+            image:   u.image   || '',
+          });
+        }
       } else {
         Alert.alert('Error', res.data.message || 'Failed to update profile');
       }
-    } catch {
+    } catch (err) {
+      console.error('Update profile error:', err);
       Alert.alert('Error', 'Failed to update profile');
     } finally {
       setSaving(false);
@@ -77,29 +157,52 @@ const ProfileScreen = ({ navigation }) => {
         {/* Avatar Section */}
         <View style={styles.avatarCard}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{initials}</Text>
-            <TouchableOpacity style={styles.editAvatarBtn}>
+            <View style={styles.avatarImageWrapper}>
+              {selectedImage ? (
+                <Image source={{ uri: selectedImage.uri }} style={styles.avatarImg} />
+              ) : profile.image ? (
+                <Image source={{ uri: profile.image }} style={styles.avatarImg} />
+              ) : (
+                <Text style={styles.avatarText}>{initials}</Text>
+              )}
+            </View>
+            <TouchableOpacity 
+              style={styles.editAvatarBtn} 
+              onPress={pickImage} 
+              activeOpacity={0.8}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
               <Text style={styles.editAvatarText}>✏️</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.name}>{user?.name || profile.name || 'Foodie'}</Text>
           <Text style={styles.email}>{user?.email || 'Welcome to Eatzy'}</Text>
+          
+          {selectedImage && (
+            <TouchableOpacity 
+              style={[styles.saveBtn, { marginTop: 16, paddingHorizontal: 30, borderRadius: 25 }]} 
+              onPress={saveProfile}
+              disabled={saving}
+            >
+              <Text style={styles.saveBtnText}>{saving ? 'Saving...' : 'Save Profile Photo'}</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Stats Row */}
         <View style={styles.statsRow}>
           <View style={styles.statBox}>
-            <Text style={styles.statVal}>12</Text>
+            <Text style={styles.statVal}>{totalOrders}</Text>
             <Text style={styles.statLab}>Orders</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statBox}>
-            <Text style={styles.statVal}>4</Text>
+            <Text style={styles.statVal}>{totalReviews}</Text>
             <Text style={styles.statLab}>Reviews</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statBox}>
-            <Text style={styles.statVal}>8</Text>
+            <Text style={styles.statVal}>{totalFavs}</Text>
             <Text style={styles.statLab}>Favs</Text>
           </View>
         </View>
@@ -168,8 +271,15 @@ const styles = StyleSheet.create({
   avatar: {
     width: 100,
     height: 100,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarImageWrapper: {
+    width: 100,
+    height: 100,
     borderRadius: 50,
-    backgroundColor: '#fef2f2',
+    backgroundColor: '#FF4C24',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 4,
@@ -178,26 +288,35 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 15,
     elevation: 8,
-    position: 'relative',
+    overflow: 'hidden',
+  },
+  avatarImg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
   },
   avatarText: {
     fontSize: 40,
     fontWeight: '900',
-    color: '#FF4C24',
+    color: '#fff',
   },
   editAvatarBtn: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     backgroundColor: '#fff',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    elevation: 4,
+    borderWidth: 2,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 12,
+    zIndex: 10,
   },
   editAvatarText: { fontSize: 14 },
   name: {

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BackArrow from '../components/BackArrow';
 
 const INFO_ITEMS = [
   {
@@ -53,7 +54,7 @@ const DeliveryScreen = ({ navigation }) => {
     <View style={[styles.safe, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backIcon}>←</Text>
+          <BackArrow />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Delivery Info</Text>
       </View>
@@ -95,15 +96,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f3f4f6',
   },
   backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f3f4f6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+    paddingVertical: 10,
+    paddingRight: 20,
   },
-  backIcon: { fontSize: 20, color: '#1a1a1a', fontWeight: 'bold' },
   headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
 
   container: { padding: 16 },

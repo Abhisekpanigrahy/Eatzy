@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
 import 'react-native-url-polyfill/auto';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BackArrow from '../components/BackArrow';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useCart } from '../context/CartContext';
 import { useOrders } from '../context/OrderContext';
@@ -11,6 +13,7 @@ const StripeWebViewScreen = ({ route, navigation }) => {
   const { clearCart } = useCart();
   const { verifyOrder } = useOrders();
   const handled = useRef(false);
+  const insets = useSafeAreaInsets();
 
   const handleNavChange = async (navState) => {
     if (handled.current) return;
@@ -39,13 +42,28 @@ const StripeWebViewScreen = ({ route, navigation }) => {
     }
   };
 
-  const handleError = () => {
+  const handleError = (syntheticEvent) => {
+    const { nativeEvent } = syntheticEvent;
+    // Ignore errors if they happen during verification redirect
+    if (nativeEvent.url?.includes('/verify')) {
+      return;
+    }
     Alert.alert('WebView Error', 'Unable to load payment page. Please try again.');
     navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <BackArrow />
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.headerTitle}>Payment</Text>
+          <Text style={styles.headerSub}>Complete your purchase</Text>
+        </View>
+      </View>
+
       <WebView
         source={{ uri: sessionUrl }}
         onNavigationStateChange={handleNavChange}
@@ -59,8 +77,22 @@ const StripeWebViewScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: '#fff' },
   webview: { flex: 1 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
+  backBtn: {
+    paddingVertical: 10,
+    paddingRight: 20,
+  },
+  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
+  headerSub: { fontSize: 13, color: '#9ca3af', fontWeight: '700' },
 });
 
 export default StripeWebViewScreen;

@@ -88,14 +88,6 @@ const AppTabs = () => {
             </View>
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            if (!token) {
-              e.preventDefault();
-              navigation.navigate('Login');
-            }
-          },
-        })}
       />
       <Tab.Screen
         name="OrdersTab"
@@ -105,14 +97,6 @@ const AppTabs = () => {
             <TabIcon type="orders" label="Orders" focused={focused} />
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            if (!token) {
-              e.preventDefault();
-              navigation.navigate('Login');
-            }
-          },
-        })}
       />
       <Tab.Screen
         name="ProfileTab"
@@ -122,14 +106,6 @@ const AppTabs = () => {
             <TabIcon type="profile" label="Profile" focused={focused} />
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            if (!token) {
-              e.preventDefault();
-              navigation.navigate('Login');
-            }
-          },
-        })}
       />
     </Tab.Navigator>
   );

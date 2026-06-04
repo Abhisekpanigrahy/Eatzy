@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -10,10 +10,13 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BackArrow from '../components/BackArrow';
 import AddressForm, { validateAddress } from '../components/AddressForm';
 import { useCart } from '../context/CartContext';
 import { useFoods } from '../context/FoodContext';
 import { useOrders } from '../context/OrderContext';
+import { useAuth } from '../context/AuthContext';
+import apiClient from '../api/apiClient';
 import { DELIVERY_CHARGE } from '../constants/config';
 
 const PAYMENT_METHODS = [
@@ -25,12 +28,42 @@ const CheckoutScreen = ({ navigation }) => {
   const { cartData, clearCart } = useCart();
   const { foods } = useFoods();
   const { placeOrder, error } = useOrders();
+  const { token } = useAuth();
   const insets = useSafeAreaInsets();
 
   const [address, setAddress]           = useState({});
   const [formErrors, setFormErrors]     = useState({});
   const [loading, setLoading]           = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('stripe');
+  const [savedAddress, setSavedAddress]   = useState(null);
+  const [useSaved, setUseSaved]           = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      apiClient.get('/api/user/profile')
+        .then((res) => {
+          if (res.data.success && res.data.data.address) {
+            const addr = res.data.data.address;
+            // If it's a structured address (object) and has content
+            if (typeof addr === 'object' && addr !== null && Object.keys(addr).length > 0) {
+              setSavedAddress(addr);
+              setAddress(addr);
+              setUseSaved(true);
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  }, [token]);
+
+  const toggleSavedAddress = () => {
+    if (!useSaved && savedAddress) {
+      setAddress(savedAddress);
+    } else if (useSaved) {
+      setAddress({});
+    }
+    setUseSaved(!useSaved);
+  };
 
   const cartItems = foods
     .filter((f) => (cartData[f._id] || 0) > 0)
@@ -53,6 +86,11 @@ const CheckoutScreen = ({ navigation }) => {
     setLoading(false);
 
     if (result.success) {
+      // Save this address to user profile for future use
+      if (token) {
+        apiClient.post('/api/user/profile/update', { address }).catch(() => {});
+      }
+
       if (paymentMethod === 'cod') {
         clearCart();
         Alert.alert(
@@ -72,7 +110,7 @@ const CheckoutScreen = ({ navigation }) => {
     <View style={[styles.safe, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backIcon}>←</Text>
+          <BackArrow />
         </TouchableOpacity>
         <View>
           <Text style={styles.headerTitle}>Checkout</Text>
@@ -89,13 +127,25 @@ const CheckoutScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.sectionLabel}>Delivery Details</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionLabel}>Delivery Details</Text>
+            {savedAddress && (
+              <TouchableOpacity style={styles.useSavedBtn} onPress={toggleSavedAddress}>
+                <Text style={styles.useSavedText}>
+                  {useSaved ? 'Use Different Address' : 'Use Saved Address'}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
           <View style={styles.formContainer}>
-            <AddressForm value={address} onChange={setAddress} errors={formErrors} />
+            <AddressForm value={address} onChange={(val) => { setAddress(val); setUseSaved(false); }} errors={formErrors} />
           </View>
 
           {/* Payment method */}
-          <Text style={styles.sectionLabel}>Payment Method</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionLabel}>Payment Method</Text>
+          </View>
           {PAYMENT_METHODS.map((m) => (
             <TouchableOpacity
               key={m.id}
@@ -115,7 +165,9 @@ const CheckoutScreen = ({ navigation }) => {
           ))}
 
           {/* Order summary */}
-          <Text style={styles.sectionLabel}>Order Summary</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionLabel}>Order Summary</Text>
+          </View>
           <View style={styles.summaryCard}>
             {cartItems.map((item) => (
               <View key={item._id} style={styles.summaryRow}>
@@ -177,17 +229,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f3f4f6',
   },
   backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f3f4f6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+    paddingVertical: 10,
+    paddingRight: 20,
   },
-  backIcon: { fontSize: 20, color: '#1a1a1a', fontWeight: 'bold' },
   headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
-  headerSub: { fontSize: 13, color: '#6b7280', fontWeight: '600' },
+  headerSub: { fontSize: 13, color: '#9ca3af', fontWeight: '700' },
 
   container: { padding: 16 },
   sectionLabel: {
@@ -196,9 +242,28 @@ const styles = StyleSheet.create({
     color: '#9ca3af',
     textTransform: 'uppercase',
     letterSpacing: 1,
-    marginTop: 24,
-    marginBottom: 16,
     marginLeft: 4,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 32,
+    marginBottom: 16,
+  },
+  useSavedBtn: {
+    backgroundColor: '#fef2f2',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#fee2e2',
+  },
+  useSavedText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#FF4C24',
+    textTransform: 'uppercase',
   },
 
   formContainer: {

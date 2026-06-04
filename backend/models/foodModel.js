@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
-    userId:  { type: String },
-    userName:{ type: String, default: "Anonymous" },
-    rating:  { type: Number, required: true, min: 1, max: 5 },
-    text:    { type: String, required: true },
-    date:    { type: Date, default: Date.now }
+    userId:    { type: String },
+    userName:  { type: String, default: "Anonymous" },
+    userImage: { type: String, default: "" },
+    rating:    { type: Number, required: true, min: 1, max: 5 },
+    text:      { type: String, required: true },
+    date:      { type: Date, default: Date.now }
 });
 
 const foodSchema = new mongoose.Schema({

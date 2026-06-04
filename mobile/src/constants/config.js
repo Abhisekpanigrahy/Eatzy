@@ -7,4 +7,4 @@
 export const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
 
 /** Fixed delivery charge added to every order total (₹). */
-export const DELIVERY_CHARGE = 50;
+export const DELIVERY_CHARGE = 5;

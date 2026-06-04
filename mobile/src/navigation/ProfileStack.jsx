@@ -16,26 +16,22 @@ const headerOptions = {
 };
 
 const ProfileStack = () => (
-  <Stack.Navigator screenOptions={headerOptions}>
+  <Stack.Navigator screenOptions={{ ...headerOptions, headerShown: false }}>
     <Stack.Screen
       name="ProfileMain"
       component={ProfileScreen}
-      options={{ title: 'My Profile' }}
     />
     <Stack.Screen
       name="About"
       component={AboutScreen}
-      options={{ title: 'About Eatzy' }}
     />
     <Stack.Screen
       name="Delivery"
       component={DeliveryScreen}
-      options={{ title: 'Delivery Info' }}
     />
     <Stack.Screen
       name="Newsletter"
       component={NewsletterScreen}
-      options={{ title: 'Newsletter' }}
     />
   </Stack.Navigator>
 );

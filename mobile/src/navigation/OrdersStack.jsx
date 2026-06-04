@@ -11,9 +11,10 @@ const OrdersStack = () => (
       headerTintColor:     '#FF4C24',
       headerTitleStyle:    { color: '#262626', fontWeight: '700' },
       headerShadowVisible: false,
+      headerShown:         false,
     }}
   >
-    <Stack.Screen name="OrdersMain" component={OrdersScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="OrdersMain" component={OrdersScreen} />
   </Stack.Navigator>
 );
 

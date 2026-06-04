@@ -15,13 +15,13 @@ const headerOptions = {
 };
 
 const CartStack = () => (
-  <Stack.Navigator screenOptions={headerOptions}>
-    <Stack.Screen name="CartMain"  component={CartScreen}      options={{ title: 'My Cart' }} />
-    <Stack.Screen name="Checkout"  component={CheckoutScreen}  options={{ title: 'Checkout' }} />
+  <Stack.Navigator screenOptions={{ ...headerOptions, headerShown: false }}>
+    <Stack.Screen name="CartMain"  component={CartScreen} />
+    <Stack.Screen name="Checkout"  component={CheckoutScreen} />
     <Stack.Screen
       name="StripeWebView"
       component={StripeWebViewScreen}
-      options={{ title: 'Payment', presentation: 'modal' }}
+      options={{ title: 'Payment', presentation: 'modal', headerShown: true }}
     />
   </Stack.Navigator>
 );

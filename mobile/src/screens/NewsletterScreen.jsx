@@ -9,13 +9,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import apiClient from '../api/apiClient';
 
 const NewsletterScreen = ({ navigation }) => {
   const [email, setEmail]     = useState('');
   const [loading, setLoading] = useState(false);
   const [done, setDone]       = useState(false);
+  const insets = useSafeAreaInsets();
 
   const handleSubscribe = async () => {
     if (!email.trim()) return;
@@ -35,7 +36,7 @@ const NewsletterScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Text style={styles.backIcon}>←</Text>
@@ -109,7 +110,7 @@ const NewsletterScreen = ({ navigation }) => {
           )}
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AddressForm, { validateAddress } from '../components/AddressForm';
 import { useCart } from '../context/CartContext';
 import { useFoods } from '../context/FoodContext';
@@ -25,6 +25,7 @@ const CheckoutScreen = ({ navigation }) => {
   const { cartData, clearCart } = useCart();
   const { foods } = useFoods();
   const { placeOrder, error } = useOrders();
+  const insets = useSafeAreaInsets();
 
   const [address, setAddress]           = useState({});
   const [formErrors, setFormErrors]     = useState({});
@@ -68,7 +69,7 @@ const CheckoutScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Text style={styles.backIcon}>←</Text>
@@ -161,7 +162,7 @@ const CheckoutScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 

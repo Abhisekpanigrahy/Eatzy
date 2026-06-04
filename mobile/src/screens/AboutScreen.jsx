@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const StatCard = ({ value, label }) => (
   <View style={styles.statCard}>
@@ -27,87 +27,90 @@ const ValueCard = ({ icon, title, desc, color }) => (
   </View>
 );
 
-const AboutScreen = ({ navigation }) => (
-  <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
-    <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-        <Text style={styles.backIcon}>←</Text>
-      </TouchableOpacity>
-      <Text style={styles.headerTitle}>Our Story</Text>
+const AboutScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
+  return (
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <Text style={styles.backIcon}>←</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Our Story</Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Hero */}
+        <View style={styles.hero}>
+          <View style={styles.heroBadge}>
+            <Text style={styles.heroBadgeText}>EST. 2024</Text>
+          </View>
+          <Text style={styles.heroTitle}>
+            About <Text style={styles.brand}>Eatzy</Text>
+          </Text>
+          <Text style={styles.heroSub}>
+            Bringing delicious food from the best local kitchens right to your
+            doorstep — fast, fresh, and hassle-free.
+          </Text>
+        </View>
+
+        {/* Stats */}
+        <View style={styles.statsRow}>
+          <StatCard value="50K+" label="Foodies" />
+          <StatCard value="200+" label="Chefs" />
+          <StatCard value="25m" label="Avg Time" />
+          <StatCard value="4.9★" label="Rating" />
+        </View>
+
+        {/* Mission */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Why We Started</Text>
+          <View style={styles.missionCard}>
+            <Text style={styles.sectionText}>
+              Eatzy was founded with a simple mission: make great food accessible to
+              everyone. We partner with the finest local restaurants and home chefs
+              to curate a menu that satisfies every craving.
+            </Text>
+            <Text style={[styles.sectionText, { marginBottom: 0 }]}>
+              Whether you're a student wanting a quick bite, a family craving a
+              comfortable dinner, or an office worker hungry for a hearty lunch —
+              Eatzy is your go-to food delivery partner.
+            </Text>
+          </View>
+        </View>
+
+        {/* Values */}
+        <Text style={styles.sectionTitle}>Our Values</Text>
+        <View style={styles.valuesList}>
+          <ValueCard 
+            icon="🍽️" 
+            title="Quality First"   
+            desc="Only restaurants with the highest hygiene and food quality standards." 
+            color="#fef2f2"
+          />
+          <ValueCard 
+            icon="⚡"  
+            title="Super Speed"           
+            desc="Optimised delivery network to get your food hot and on time." 
+            color="#fffbeb"
+          />
+          <ValueCard 
+            icon="🌱"  
+            title="Sustainability"  
+            desc="Eco-friendly packaging and sustainable restaurant partnerships." 
+            color="#f0fdf4"
+          />
+          <ValueCard 
+            icon="❤️"  
+            title="Community"       
+            desc="Supporting local restaurants and chefs, feeding their community." 
+            color="#eff6ff"
+          />
+        </View>
+        <View style={{ height: 40 }} />
+      </ScrollView>
     </View>
-
-    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Hero */}
-      <View style={styles.hero}>
-        <View style={styles.heroBadge}>
-          <Text style={styles.heroBadgeText}>EST. 2024</Text>
-        </View>
-        <Text style={styles.heroTitle}>
-          About <Text style={styles.brand}>Eatzy</Text>
-        </Text>
-        <Text style={styles.heroSub}>
-          Bringing delicious food from the best local kitchens right to your
-          doorstep — fast, fresh, and hassle-free.
-        </Text>
-      </View>
-
-      {/* Stats */}
-      <View style={styles.statsRow}>
-        <StatCard value="50K+" label="Foodies" />
-        <StatCard value="200+" label="Chefs" />
-        <StatCard value="25m" label="Avg Time" />
-        <StatCard value="4.9★" label="Rating" />
-      </View>
-
-      {/* Mission */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Why We Started</Text>
-        <View style={styles.missionCard}>
-          <Text style={styles.sectionText}>
-            Eatzy was founded with a simple mission: make great food accessible to
-            everyone. We partner with the finest local restaurants and home chefs
-            to curate a menu that satisfies every craving.
-          </Text>
-          <Text style={[styles.sectionText, { marginBottom: 0 }]}>
-            Whether you're a student wanting a quick bite, a family craving a
-            comfortable dinner, or an office worker hungry for a hearty lunch —
-            Eatzy is your go-to food delivery partner.
-          </Text>
-        </View>
-      </View>
-
-      {/* Values */}
-      <Text style={styles.sectionTitle}>Our Values</Text>
-      <View style={styles.valuesList}>
-        <ValueCard 
-          icon="🍽️" 
-          title="Quality First"   
-          desc="Only restaurants with the highest hygiene and food quality standards." 
-          color="#fef2f2"
-        />
-        <ValueCard 
-          icon="⚡"  
-          title="Super Speed"           
-          desc="Optimised delivery network to get your food hot and on time." 
-          color="#fffbeb"
-        />
-        <ValueCard 
-          icon="🌱"  
-          title="Sustainability"  
-          desc="Eco-friendly packaging and sustainable restaurant partnerships." 
-          color="#f0fdf4"
-        />
-        <ValueCard 
-          icon="❤️"  
-          title="Community"       
-          desc="Supporting local restaurants and chefs, feeding their community." 
-          color="#eff6ff"
-        />
-      </View>
-      <View style={{ height: 40 }} />
-    </ScrollView>
-  </SafeAreaView>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   safe:      { flex: 1, backgroundColor: '#f9fafb' },

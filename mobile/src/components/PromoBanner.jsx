@@ -1,44 +1,37 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground } from 'react-native';
-
-const CATEGORIES = [
-  { label: 'Salad', emoji: '🥗', color: '#E8F5E9' },
-  { label: 'Rolls', emoji: '🌯', color: '#FFF3E0' },
-  { label: 'Desserts', emoji: '🍰', color: '#FCE4EC' },
-  { label: 'Sandwich', emoji: '🥪', color: '#E3F2FD' },
-  { label: 'Cake', emoji: '🎂', color: '#F3E5F5' },
-  { label: 'Pure Veg', emoji: '🌿', color: '#E8F5E9' },
-  { label: 'Pasta', emoji: '🍝', color: '#FFF8E1' },
-  { label: 'Noodles', emoji: '🍜', color: '#E0F7FA' },
-];
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image } from 'react-native';
+import { assets, menu_list } from '../assets/assets';
 
 const PromoBanner = ({ onCategoryPress }) => (
   <View style={styles.wrapper}>
-    <TouchableOpacity activeOpacity={0.95} style={styles.hero}>
-      <View style={styles.heroContent}>
-        <Text style={styles.heroTitle}>Craving something{'\n'}delicious? 🍔</Text>
-        <Text style={styles.heroSub}>Get up to 50% OFF on your first order</Text>
-        <TouchableOpacity style={styles.orderNowBtn}>
-          <Text style={styles.orderNowText}>Order Now</Text>
-        </TouchableOpacity>
+    <ImageBackground 
+      source={assets.header_img} 
+      style={styles.hero}
+      imageStyle={{ borderRadius: 24 }}
+    >
+      <View style={styles.heroOverlay}>
+        <View style={styles.heroContent}>
+          <Text style={styles.heroTitle}>Order your{'\n'}favourite food here</Text>
+          <Text style={styles.heroSub}>Choose from a diverse menu featuring a delectable array of dishes.</Text>
+          <TouchableOpacity style={styles.orderNowBtn} onPress={() => onCategoryPress?.('All')}>
+            <Text style={styles.orderNowText}>View Menu</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.heroBadge}>
-        <Text style={styles.badgeText}>50% OFF</Text>
-      </View>
-    </TouchableOpacity>
+    </ImageBackground>
 
-    <Text style={styles.sectionTitle}>What's on your mind?</Text>
+    <Text style={styles.sectionTitle}>Explore our menu</Text>
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scroll}>
-      {CATEGORIES.map((cat) => (
+      {menu_list.map((item) => (
         <TouchableOpacity
-          key={cat.label}
+          key={item.menu_name}
           style={styles.categoryItem}
-          onPress={() => onCategoryPress?.(cat.label)}
+          onPress={() => onCategoryPress?.(item.menu_name)}
         >
-          <View style={[styles.emojiCircle, { backgroundColor: cat.color }]}>
-            <Text style={styles.emojiText}>{cat.emoji}</Text>
+          <View style={styles.imageCircle}>
+            <Image source={item.menu_image} style={styles.catImage} />
           </View>
-          <Text style={styles.catLabel}>{cat.label}</Text>
+          <Text style={styles.catLabel}>{item.menu_name}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>
@@ -50,27 +43,31 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   hero: {
-    backgroundColor: '#FF4C24',
-    borderRadius: 24,
-    padding: 20,
+    height: 200,
     marginBottom: 24,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    overflow: 'hidden',
-    shadowColor: '#FF4C24',
+    justifyContent: 'flex-end',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
   },
+  heroOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 24,
+    padding: 20,
+    justifyContent: 'center',
+  },
   heroContent: {
     flex: 1,
+    justifyContent: 'center',
   },
   heroTitle: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: '900',
-    lineHeight: 28,
+    lineHeight: 32,
     marginBottom: 8,
   },
   heroSub: {
@@ -78,38 +75,26 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     marginBottom: 16,
+    maxWidth: '80%',
   },
   orderNowBtn: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 10,
+    backgroundColor: '#FF4C24',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 12,
     alignSelf: 'flex-start',
   },
   orderNowText: {
-    color: '#FF4C24',
-    fontWeight: '800',
-    fontSize: 12,
-  },
-  heroBadge: {
-    position: 'absolute',
-    right: -10,
-    top: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    transform: [{ rotate: '45deg' }],
-  },
-  badgeText: {
     color: '#fff',
-    fontWeight: '900',
-    fontSize: 10,
+    fontWeight: '800',
+    fontSize: 14,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '800',
-    color: '#2d2d2d',
+    color: '#1a1a1a',
     marginBottom: 16,
+    letterSpacing: -0.5,
   },
   scroll: {
     paddingRight: 16,
@@ -118,20 +103,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 20,
   },
-  emojiCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+  imageCircle: {
+    width: 74,
+    height: 74,
+    borderRadius: 37,
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
+    overflow: 'hidden',
   },
-  emojiText: {
-    fontSize: 32,
+  catImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   catLabel: {
     fontSize: 13,

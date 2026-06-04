@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const INFO_ITEMS = [
   {
@@ -47,39 +47,42 @@ const INFO_ITEMS = [
   },
 ];
 
-const DeliveryScreen = ({ navigation }) => (
-  <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
-    <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-        <Text style={styles.backIcon}>←</Text>
-      </TouchableOpacity>
-      <Text style={styles.headerTitle}>Delivery Info</Text>
+const DeliveryScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
+  return (
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <Text style={styles.backIcon}>←</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Delivery Info</Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Hero */}
+        <View style={styles.hero}>
+          <Text style={styles.heroTitle}>Delivery Information</Text>
+          <Text style={styles.heroSub}>Everything you need to know about how we deliver</Text>
+        </View>
+
+        <View style={styles.grid}>
+          {INFO_ITEMS.map((item, i) => (
+            <View key={i} style={styles.card}>
+              <View style={[styles.iconWrap, { backgroundColor: item.color }]}>
+                <Text style={styles.cardIcon}>{item.icon}</Text>
+              </View>
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>{item.title}</Text>
+                <Text style={styles.cardDesc}>{item.desc}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+        <View style={{ height: 40 }} />
+      </ScrollView>
     </View>
-
-    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Hero */}
-      <View style={styles.hero}>
-        <Text style={styles.heroTitle}>Delivery Information</Text>
-        <Text style={styles.heroSub}>Everything you need to know about how we deliver</Text>
-      </View>
-
-      <View style={styles.grid}>
-        {INFO_ITEMS.map((item, i) => (
-          <View key={i} style={styles.card}>
-            <View style={[styles.iconWrap, { backgroundColor: item.color }]}>
-              <Text style={styles.cardIcon}>{item.icon}</Text>
-            </View>
-            <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardDesc}>{item.desc}</Text>
-            </View>
-          </View>
-        ))}
-      </View>
-      <View style={{ height: 40 }} />
-    </ScrollView>
-  </SafeAreaView>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   safe:      { flex: 1, backgroundColor: '#f9fafb' },

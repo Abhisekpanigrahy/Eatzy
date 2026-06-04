@@ -14,9 +14,9 @@ const headerOptions = {
 };
 
 const MenuStack = () => (
-  <Stack.Navigator screenOptions={headerOptions}>
-    <Stack.Screen name="MenuMain"   component={MenuScreen}       options={{ title: 'Menu' }} />
-    <Stack.Screen name="FoodDetail" component={FoodDetailScreen} options={{ title: 'Dish Details' }} />
+  <Stack.Navigator screenOptions={{ ...headerOptions, headerShown: false }}>
+    <Stack.Screen name="MenuMain"   component={MenuScreen} />
+    <Stack.Screen name="FoodDetail" component={FoodDetailScreen} />
   </Stack.Navigator>
 );
 

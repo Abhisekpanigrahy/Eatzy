@@ -17,12 +17,12 @@ const headerOptions = {
 };
 
 const HomeStack = () => (
-  <Stack.Navigator screenOptions={headerOptions}>
-    <Stack.Screen name="HomeMain"    component={HomeScreen}       options={{ headerShown: false }} />
-    <Stack.Screen name="FoodDetail"  component={FoodDetailScreen} options={{ title: 'Dish Details' }} />
-    <Stack.Screen name="About"       component={AboutScreen}      options={{ title: 'About Eatzy' }} />
-    <Stack.Screen name="Delivery"    component={DeliveryScreen}   options={{ title: 'Delivery Info' }} />
-    <Stack.Screen name="Newsletter"  component={NewsletterScreen} options={{ title: 'Newsletter' }} />
+  <Stack.Navigator screenOptions={{ ...headerOptions, headerShown: false }}>
+    <Stack.Screen name="HomeMain"    component={HomeScreen} />
+    <Stack.Screen name="FoodDetail"  component={FoodDetailScreen} />
+    <Stack.Screen name="About"       component={AboutScreen} />
+    <Stack.Screen name="Delivery"    component={DeliveryScreen} />
+    <Stack.Screen name="Newsletter"  component={NewsletterScreen} />
   </Stack.Navigator>
 );
 

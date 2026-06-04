@@ -82,17 +82,17 @@ const MobileApp = () => {
                                 </div>
                                 <h4 style={{ fontSize: '12px', marginBottom: '10px' }}>Recommended</h4>
                                 <div className="mock-food-card">
-                                    <div className="mock-food-img" style={{ background: `url(${food_list[4].image})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '70px' }}></div>
+                                    <div className="mock-food-img" style={{ background: `url(${food_list[4]?.image})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '70px' }}></div>
                                     <div style={{ padding: '6px 8px' }}>
-                                        <p style={{ fontSize: '9px', fontWeight: '600', color: '#262626', marginBottom: '4px' }}>{food_list[4].name}</p>
-                                        <p style={{ fontSize: '8px', color: '#FF4C24', fontWeight: '700' }}>${food_list[4].price}</p>
+                                        <p style={{ fontSize: '9px', fontWeight: '600', color: '#262626', marginBottom: '4px' }}>{food_list[4]?.name}</p>
+                                        <p style={{ fontSize: '8px', color: '#FF4C24', fontWeight: '700' }}>${food_list[4]?.price}</p>
                                     </div>
                                 </div>
                                 <div className="mock-food-card">
-                                    <div className="mock-food-img" style={{ background: `url(${food_list[8].image})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '70px' }}></div>
+                                    <div className="mock-food-img" style={{ background: `url(${food_list[8]?.image})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '70px' }}></div>
                                     <div style={{ padding: '6px 8px' }}>
-                                        <p style={{ fontSize: '9px', fontWeight: '600', color: '#262626', marginBottom: '4px' }}>{food_list[8].name}</p>
-                                        <p style={{ fontSize: '8px', color: '#FF4C24', fontWeight: '700' }}>${food_list[8].price}</p>
+                                        <p style={{ fontSize: '9px', fontWeight: '600', color: '#262626', marginBottom: '4px' }}>{food_list[8]?.name}</p>
+                                        <p style={{ fontSize: '8px', color: '#FF4C24', fontWeight: '700' }}>${food_list[8]?.price}</p>
                                     </div>
                                 </div>
                             </div>

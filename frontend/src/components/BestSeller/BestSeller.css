@@ -1,0 +1,49 @@
+.best-seller {
+  padding: 40px 0;
+}
+
+.best-seller-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.best-seller-header .header-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.best-seller-header .header-label span {
+  display: inline-block;
+  width: 40px;
+  height: 2px;
+  background: var(--brand-color);
+}
+
+.best-seller-header .header-label p {
+  color: var(--brand-color);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.best-seller-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.best-seller-header .header-desc {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.best-seller-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}

@@ -2,17 +2,27 @@ import React, { useContext, useState } from 'react'
 import './FoodItem.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../Context/StoreContext';
+import { useNavigate } from 'react-router-dom';
 
 const FoodItem = ({ image, name, price, desc, id }) => {
 
     const [itemCount, setItemCount] = useState(0);
-    const { cartItems = {}, addToCart, removeFromCart, url } = useContext(StoreContext);
+    const { cartItems = {}, addToCart, removeFromCart, url, wishlist, toggleWishlist } = useContext(StoreContext);
     const cart = cartItems || {};
+    const navigate = useNavigate();
+
+    const isWishlisted = wishlist?.includes(id);
 
     return (
         <div className='food-item'>
             <div className='food-item-img-container'>
-                <img className='food-item-image' src={url + "/images/" + image} alt="" />
+                <img
+                    className='food-item-image'
+                    src={url + "/images/" + image}
+                    alt={name}
+                    onClick={() => navigate(`/food/${id}`)}
+                    style={{ cursor: 'pointer' }}
+                />
                 {!cart[id]
                     ? <img className='add' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" />
                     : <div className="food-item-counter">
@@ -21,8 +31,15 @@ const FoodItem = ({ image, name, price, desc, id }) => {
                         <img src={assets.add_icon_green} onClick={() => addToCart(id)} alt="" />
                     </div>
                 }
+                <button
+                    className={`food-item-wishlist ${isWishlisted ? 'wishlisted' : ''}`}
+                    onClick={() => toggleWishlist(id)}
+                    aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                    {isWishlisted ? '♥' : '♡'}
+                </button>
             </div>
-            <div className="food-item-info">
+            <div className="food-item-info" onClick={() => navigate(`/food/${id}`)} style={{ cursor: 'pointer' }}>
                 <div className="food-item-name-rating">
                     <p>{name}</p> <img src={assets.rating_starts} alt="" />
                 </div>

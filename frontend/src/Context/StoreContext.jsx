@@ -10,6 +10,18 @@ const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("")
     const [showLogin, setShowLogin] = useState(false);
+    const [wishlist, setWishlist] = useState(() => {
+        const saved = localStorage.getItem('wishlist');
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    const toggleWishlist = (itemId) => {
+        setWishlist(prev => {
+            const updated = prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId];
+            localStorage.setItem('wishlist', JSON.stringify(updated));
+            return updated;
+        });
+    };
 
 
     const addToCart = async (itemId) => {
@@ -85,7 +97,9 @@ const StoreContextProvider = (props) => {
         loadCartData,
         setCartItems,
         showLogin,
-        setShowLogin
+        setShowLogin,
+        wishlist,
+        toggleWishlist
     };
 
     return (

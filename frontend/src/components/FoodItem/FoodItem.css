@@ -92,3 +92,29 @@
     font-weight: 500;
     margin: 10px 0px;
 }
+
+.food-item-wishlist {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.2s, transform 0.2s;
+    padding: 0;
+    line-height: 1;
+}
+
+.food-item-wishlist:hover,
+.food-item-wishlist.wishlisted {
+    color: #FF4C24;
+    transform: scale(1.1);
+}

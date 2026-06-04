@@ -1,0 +1,62 @@
+.edit {
+    width: 70%;
+    margin-left: max(5vw, 25px);
+    margin-top: 50px;
+    color: #6D6D6D;
+    font-size: 16px;
+}
+
+.edit form {
+    gap: 20px;
+}
+
+.edit-img-hint {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 4px;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.edit-cancel-btn {
+    padding: 10px 20px;
+    background: transparent;
+    color: #6D6D6D;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.edit-cancel-btn:hover {
+    background: #f3f3f3;
+}
+
+@media (max-width: 900px) {
+    .edit {
+        width: 85%;
+    }
+}
+
+@media (max-width: 600px) {
+    .edit {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 25px;
+        padding: 0 15px;
+    }
+
+    .edit-actions {
+        flex-direction: column;
+    }
+
+    .edit-cancel-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

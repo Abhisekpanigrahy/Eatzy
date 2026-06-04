@@ -34,3 +34,19 @@
         width: 40px;
     }
 }
+
+.list-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-btn {
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.edit-btn:hover {
+    transform: scale(1.2);
+}

@@ -1,0 +1,110 @@
+.admin-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fff4f2 0%, #ffe8e2 100%);
+}
+
+.admin-login-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 40px rgba(255, 76, 36, 0.12);
+}
+
+.admin-login-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.admin-login-header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -1px;
+}
+
+.admin-login-header h1 span {
+    color: var(--brand-color);
+}
+
+.admin-login-header p {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.login-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.login-field input {
+    padding: 12px 16px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.login-field input:focus {
+    border-color: var(--brand-color);
+}
+
+.admin-login-card button {
+    width: 100%;
+    padding: 14px;
+    background: var(--brand-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.admin-login-card button:hover:not(:disabled) {
+    background: #e63e17;
+    transform: translateY(-1px);
+}
+
+.admin-login-card button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.login-spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

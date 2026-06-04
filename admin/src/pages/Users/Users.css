@@ -1,0 +1,59 @@
+.users-page {
+    padding: 20px;
+    flex: 1;
+}
+
+.users-table {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 16px;
+}
+
+.users-table-header,
+.users-table-row {
+    display: grid;
+    grid-template-columns: 0.3fr 1.5fr 2fr 0.8fr 0.8fr;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+}
+
+.users-table-header {
+    background: #f9f9f9;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.users-table-row {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.users-table-row:last-child {
+    border-bottom: none;
+}
+
+.role-badge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.role-badge.admin {
+    background: #fff4f2;
+    color: #FF4C24;
+}
+
+.role-badge.user {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.no-users {
+    padding: 20px;
+    color: #9ca3af;
+    text-align: center;
+}

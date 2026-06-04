@@ -15,6 +15,10 @@ import Verify from './pages/Verify/Verify'
 import Menu from './pages/Menu/Menu'
 import MobileApp from './pages/MobileApp/MobileApp'
 import ContactUs from './pages/ContactUs/ContactUs'
+import About from './pages/About/About'
+import Delivery from './pages/Delivery/Delivery'
+import FoodDetail from './pages/FoodDetail/FoodDetail'
+import Profile from './pages/Profile/Profile'
 
 const App = () => {
 
@@ -36,6 +40,10 @@ const App = () => {
           <Route path='/order' element={<PlaceOrder />} />
           <Route path='/myorders' element={<MyOrders />} />
           <Route path='/verify' element={<Verify />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/delivery' element={<Delivery />} />
+          <Route path='/food/:id' element={<FoodDetail />} />
+          <Route path='/profile' element={<Profile />} />
         </Routes>
       </div>
       <Footer />

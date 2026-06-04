@@ -3,10 +3,12 @@ import './List.css'
 import { url } from '../../assets/assets'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const List = () => {
 
   const [list,setList] = useState([]);
+  const navigate = useNavigate();
   
   const fetchList = async () => {
     const response = await axios.get(`${url}/api/food/list`)
@@ -45,16 +47,19 @@ const List = () => {
             <b>Name</b>
             <b>Category</b>
             <b>Price</b>
-            <b>Action</b>
+            <b>Actions</b>
           </div>
           {list.map((item,index)=>{
             return (
               <div key={index} className='list-table-format'>
-                <img src={`${url}/images/`+item.image} alt="" />
+                <img src={item.image && item.image.startsWith('http') ? item.image : `${url}/images/`+item.image} alt="" />
                 <p>{item.name}</p>
                 <p>{item.category}</p>
                 <p>${item.price}</p>
-                <p className='cursor' onClick={()=>removeFood(item._id)}>x</p>
+                <div className='list-actions'>
+                  <p className='edit-btn' onClick={() => navigate(`/edit/${item._id}`)}>✏️</p>
+                  <p className='cursor' onClick={()=>removeFood(item._id)}>✕</p>
+                </div>
               </div>
             )
           })}

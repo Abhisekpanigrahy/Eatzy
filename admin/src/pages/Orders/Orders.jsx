@@ -9,28 +9,25 @@ const Order = () => {
   const [orders, setOrders] = useState([]);
 
   const fetchAllOrders = async () => {
-    const response = await axios.get(`${url}/api/order/list`)
+    const token = localStorage.getItem('adminToken')
+    const response = await axios.get(`${url}/api/order/list`, { headers: { token } })
     if (response.data.success) {
       setOrders(response.data.data.reverse());
-      console.log(response.data.data);
-    }
-    else {
-      toast.error("Error")
+    } else {
+      toast.error("Error fetching orders")
     }
   }
 
-  const statusHandler = async (event,orderId) => {
-    console.log(event,orderId);
-    const response = await axios.post(`${url}/api/order/status`,{
+  const statusHandler = async (event, orderId) => {
+    const token = localStorage.getItem('adminToken')
+    const response = await axios.post(`${url}/api/order/status`, {
       orderId,
-      status:event.target.value
-    })
-    if(response.data.success)
-    {
+      status: event.target.value
+    }, { headers: { token } })
+    if (response.data.success) {
       await fetchAllOrders();
     }
   }
-
 
   useEffect(() => {
     fetchAllOrders();
@@ -48,22 +45,29 @@ const Order = () => {
                 {order.items.map((item, index) => {
                   if (index === order.items.length - 1) {
                     return item.name + " x " + item.quantity
-                  }
-                  else {
+                  } else {
                     return item.name + " x " + item.quantity + ", "
                   }
                 })}
-                </p>
-              <p className='order-item-name'>{order.address.firstName+" "+order.address.lastName}</p>
+              </p>
+              <p className='order-item-name'>{order.address.firstName + " " + order.address.lastName}</p>
               <div className='order-item-address'>
-                <p>{order.address.street+","}</p>
-                <p>{order.address.city+", "+order.address.state+", "+order.address.country+", "+order.address.zipcode}</p>
+                <p>{order.address.street + ","}</p>
+                <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode}</p>
               </div>
               <p className='order-item-phone'>{order.address.phone}</p>
+              <p className='order-payment-method'>
+                <span className={`pay-badge ${order.paymentMethod}`}>
+                  {order.paymentMethod === 'cod' ? '💵 COD' : '💳 Stripe'}
+                </span>
+                <span className={`pay-status ${order.payment ? 'paid' : 'pending'}`}>
+                  {order.payment ? 'Paid' : 'Pending'}
+                </span>
+              </p>
             </div>
             <p>Items : {order.items.length}</p>
             <p>${order.amount}</p>
-            <select onChange={(e)=>statusHandler(e,order._id)} value={order.status} name="" id="">
+            <select onChange={(e) => statusHandler(e, order._id)} value={order.status}>
               <option value="Food Processing">Food Processing</option>
               <option value="Out for delivery">Out for delivery</option>
               <option value="Delivered">Delivered</option>

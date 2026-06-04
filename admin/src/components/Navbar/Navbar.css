@@ -18,6 +18,40 @@
     width: 40px;
 }
 
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.admin-badge {
+    background: #fff4f2;
+    color: #FF4C24;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.logout-btn {
+    padding: 7px 18px;
+    background: #FF4C24;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.logout-btn:hover {
+    background: #e63e17;
+}
+
 @media (max-width:600px) {
     .navbar .logo {
         font-size: 22px;
@@ -25,5 +59,9 @@
 
     .navbar .profile {
         width: 32px;
+    }
+
+    .admin-badge {
+        display: none;
     }
 }

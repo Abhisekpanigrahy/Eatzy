@@ -26,6 +26,47 @@
     padding: 10px;
     outline:none;
 }
+
+/* Payment method badges */
+.order-payment-method {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.pay-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: #fff4f2;
+    color: var(--brand-color);
+}
+
+.pay-badge.cod {
+    background: #fefce8;
+    color: #a16207;
+}
+
+.pay-status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+.pay-status.paid {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.pay-status.pending {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
 @media(max-width:1000px){
     .order-item{
         font-size: 12px;

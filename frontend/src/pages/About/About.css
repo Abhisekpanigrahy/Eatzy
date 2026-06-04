@@ -1,0 +1,152 @@
+.about {
+  padding: 40px 0;
+}
+
+.about-hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-light);
+  border-radius: 16px;
+  margin-bottom: 60px;
+}
+
+.about-label {
+  color: var(--brand-color);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.about-hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.about-hero h1 span {
+  color: var(--brand-color);
+}
+
+.about-subtitle {
+  color: #6b7280;
+  font-size: 16px;
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.about-mission {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  margin-bottom: 70px;
+}
+
+.about-mission-text {
+  flex: 1;
+}
+
+.about-mission-text h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.about-mission-text p {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.about-mission-img {
+  flex: 1;
+}
+
+.about-mission-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.mission-stat {
+  background: var(--bg-light);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.mission-stat h3 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--brand-color);
+  margin-bottom: 6px;
+}
+
+.mission-stat p {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.about-values {
+  margin-bottom: 60px;
+}
+
+.about-values h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.value-card {
+  border: 1px solid #f3e8e6;
+  border-radius: 12px;
+  padding: 28px 20px;
+  text-align: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.value-card:hover {
+  box-shadow: 0 6px 20px rgba(255, 76, 36, 0.1);
+  transform: translateY(-3px);
+}
+
+.value-icon {
+  font-size: 36px;
+  margin-bottom: 14px;
+}
+
+.value-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.value-card p {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .about-mission {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .about-hero h1 {
+    font-size: 28px;
+  }
+}

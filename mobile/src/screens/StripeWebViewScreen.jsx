@@ -27,7 +27,7 @@ const StripeWebViewScreen = ({ route, navigation }) => {
         const result = await verifyOrder(orderId, success);
         if (result.success) {
           clearCart();
-          navigation.reset({ index: 0, routes: [{ name: 'Orders' }] });
+          navigation.reset({ index: 0, routes: [{ name: 'OrdersTab' }] });
         } else {
           Alert.alert('Payment Failed', 'Your payment was not completed.');
           navigation.navigate('Cart');

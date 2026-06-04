@@ -61,25 +61,6 @@ const NewsletterStrip = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-/* ─── Policy badges ──────────────────────────────────────────────────────── */
-const PolicyBadges = () => (
-  <View style={styles.policyRow}>
-    {[
-      { icon: '⚡', label: 'Fast Delivery', color: '#FFF9C4' },
-      { icon: '🔄', label: 'Easy Reorder', color: '#E1F5FE' },
-      { icon: '🛡️', label: 'Safe & Fresh', color: '#E8F5E9' },
-      { icon: '💬', label: '24/7 Support', color: '#F3E5F5' },
-    ].map((p) => (
-      <View key={p.label} style={styles.policyCard}>
-        <View style={[styles.policyIconCircle, { backgroundColor: p.color }]}>
-          <Text style={styles.policyIcon}>{p.icon}</Text>
-        </View>
-        <Text style={styles.policyLabel}>{p.label}</Text>
-      </View>
-    ))}
-  </View>
-);
-
 /* ─── Main screen ────────────────────────────────────────────────────────── */
 const HomeScreen = ({ navigation }) => {
   const { foods, loading, error, retryFetch } = useFoods();
@@ -104,6 +85,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={[styles.safe, { paddingTop: insets.top }]}>
+      <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
       <FlatList
         data={filteredFoods}
         keyExtractor={(item) => item._id}
@@ -118,8 +100,6 @@ const HomeScreen = ({ navigation }) => {
             <PromoBanner
               onCategoryPress={(cat) => navigation.navigate('MenuTab', { screen: 'MenuMain', params: { category: cat } })}
             />
-
-            <PolicyBadges />
 
             <FavoritesSection
               onFoodPress={handleFoodPress}
@@ -235,32 +215,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FF4C24',
   },
-
-  /* Policy */
-  policyRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-    gap: 8,
-  },
-  policyCard: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  policyIconCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 6,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    elevation: 1,
-  },
-  policyIcon:  { fontSize: 22 },
-  policyLabel: { fontSize: 10, fontWeight: '700', color: '#4b5563', textAlign: 'center' },
 
   /* Newsletter */
   newsletterStrip: {

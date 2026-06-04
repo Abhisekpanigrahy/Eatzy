@@ -15,6 +15,7 @@ const port = process.env.PORT || 4000;
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use("/images", express.static('uploads'));
 
 // Connect services
 connectDB();

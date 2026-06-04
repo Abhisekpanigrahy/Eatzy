@@ -85,7 +85,7 @@ const FoodDetail = () => {
         <div className="food-detail-images">
           <img
             className="food-detail-main-img"
-            src={url + "/images/" + food.image}
+            src={food.image.startsWith("http") ? food.image : url + "/images/" + food.image}
             alt={food.name}
             loading="lazy"
           />

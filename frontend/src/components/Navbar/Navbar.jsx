@@ -94,7 +94,7 @@ const Navbar = () => {
                   setSearchQuery("");
                   setShowSearch(false);
                 }}>
-                  <img src={url + "/images/" + item.image} alt="" />
+                  <img src={item.image.startsWith("http") ? item.image : url + "/images/" + item.image} alt="" />
                   <p>{item.name}</p>
                 </div>
               ))}

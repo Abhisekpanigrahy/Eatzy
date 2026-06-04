@@ -135,7 +135,7 @@ const Profile = () => {
               <div className="wishlist-grid">
                 {wishlistedItems.map(item => (
                   <div key={item._id} className="wishlist-item" onClick={() => navigate(`/food/${item._id}`)}>
-                    <img src={url + "/images/" + item.image} alt={item.name} loading="lazy" />
+                    <img src={item.image.startsWith("http") ? item.image : url + "/images/" + item.image} alt={item.name} loading="lazy" />
                     <div className="wishlist-item-info">
                       <p className="wi-name">{item.name}</p>
                       <p className="wi-price">${item.price}</p>

@@ -114,20 +114,20 @@ const AboutScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safe:      { flex: 1, backgroundColor: '#f9fafb' },
+  safe:      { flex: 1, backgroundColor: '#F9FAFB' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: '#E5E7EB',
   },
   backBtn: {
     paddingVertical: 10,
     paddingRight: 20,
   },
-  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
+  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1F2937' },
 
   container: { padding: 16 },
 
@@ -138,14 +138,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 15,
     elevation: 4,
   },
   heroBadge: {
-    backgroundColor: '#fef2f2',
+    backgroundColor: '#FFF5F2',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 10,
@@ -155,12 +155,12 @@ const styles = StyleSheet.create({
     color: '#FF4C24',
     fontSize: 10,
     fontWeight: '900',
-    letterSpacing: 1,
+    letterSpacing: 1.2,
   },
   heroTitle: {
     fontSize: 32,
     fontWeight: '900',
-    color: '#1a1a1a',
+    color: '#1F2937',
     textAlign: 'center',
     marginBottom: 12,
     letterSpacing: -1,
@@ -168,10 +168,10 @@ const styles = StyleSheet.create({
   brand: { color: '#FF4C24' },
   heroSub: {
     fontSize: 15,
-    color: '#6b7280',
+    color: '#6B7280',
     textAlign: 'center',
     lineHeight: 24,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 
   statsRow: {
@@ -187,20 +187,20 @@ const styles = StyleSheet.create({
     padding: 12,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
     shadowColor: '#000',
     shadowOpacity: 0.02,
     shadowRadius: 10,
     elevation: 1,
   },
-  statValue: { fontSize: 16, fontWeight: '900', color: '#1a1a1a' },
-  statLabel: { fontSize: 9, color: '#9ca3af', fontWeight: '800', marginTop: 4, textTransform: 'uppercase' },
+  statValue: { fontSize: 16, fontWeight: '900', color: '#1F2937' },
+  statLabel: { fontSize: 9, color: '#9CA3AF', fontWeight: '800', marginTop: 4, textTransform: 'uppercase' },
 
   section: { marginBottom: 32 },
   sectionTitle: { 
     fontSize: 18, 
     fontWeight: '900', 
-    color: '#1a1a1a', 
+    color: '#1F2937', 
     marginBottom: 16, 
     marginLeft: 4,
     letterSpacing: -0.5,
@@ -210,11 +210,11 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: 24,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
   sectionText: {
     fontSize: 15,
-    color: '#4b5563',
+    color: '#4B5563',
     lineHeight: 24,
     marginBottom: 16,
     fontWeight: '500',
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
   valueIconWrap: {
     width: 56,
@@ -240,8 +240,8 @@ const styles = StyleSheet.create({
   },
   valueIcon: { fontSize: 24 },
   valueContent: { flex: 1 },
-  valueTitle: { fontSize: 16, fontWeight: '800', color: '#1a1a1a', marginBottom: 2 },
-  valueDesc: { fontSize: 13, color: '#6b7280', fontWeight: '600', lineHeight: 18 },
+  valueTitle: { fontSize: 16, fontWeight: '800', color: '#1F2937', marginBottom: 2 },
+  valueDesc: { fontSize: 13, color: '#6B7280', fontWeight: '500', lineHeight: 18 },
 });
 
 export default AboutScreen;

@@ -97,13 +97,13 @@ const MenuScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#FFF' },
+  safe: { flex: 1, backgroundColor: '#F9FAFB' },
   filterBar: {
     backgroundColor: '#fff',
     paddingTop: 16,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: '#E5E7EB',
   },
   pills: { paddingHorizontal: 16 },
   list: { padding: 16, paddingBottom: 100 },
@@ -113,18 +113,18 @@ const styles = StyleSheet.create({
   heading: { 
     fontSize: 24, 
     fontWeight: '900', 
-    color: '#1a1a1a', 
+    color: '#1F2937', 
     letterSpacing: -0.5,
   },
   countText: {
     fontSize: 13,
-    color: '#9ca3af',
+    color: '#6B7280',
     fontWeight: '600',
     marginTop: 2,
   },
   row: { justifyContent: 'space-between' },
   cardWrap: { width: '48%', marginBottom: 16 },
-  empty: { textAlign: 'center', color: '#6b7280', fontSize: 16, marginTop: 40, fontWeight: '600' },
+  empty: { textAlign: 'center', color: '#6B7280', fontSize: 16, marginTop: 40, fontWeight: '600' },
 });
 
 export default MenuScreen;

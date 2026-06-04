@@ -86,20 +86,20 @@ const DeliveryScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safe:      { flex: 1, backgroundColor: '#f9fafb' },
+  safe:      { flex: 1, backgroundColor: '#F9FAFB' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: '#E5E7EB',
   },
   backBtn: {
     paddingVertical: 10,
     paddingRight: 20,
   },
-  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
+  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1F2937' },
 
   container: { padding: 16 },
 
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 15,
     elevation: 4,
   },
-  heroTitle: { fontSize: 22, fontWeight: '900', color: '#1a1a1a', marginBottom: 8, textAlign: 'center' },
-  heroSub:   { fontSize: 13, color: '#6b7280', textAlign: 'center', fontWeight: '600' },
+  heroTitle: { fontSize: 22, fontWeight: '900', color: '#1F2937', marginBottom: 8, textAlign: 'center' },
+  heroSub:   { fontSize: 13, color: '#6B7280', textAlign: 'center', fontWeight: '500' },
 
   grid: { gap: 16 },
   card: {
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
   iconWrap: {
     width: 56,
@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
   },
   cardIcon:  { fontSize: 24 },
   cardContent: { flex: 1 },
-  cardTitle: { fontSize: 15, fontWeight: '800', color: '#1a1a1a', marginBottom: 4 },
-  cardDesc:  { fontSize: 12, color: '#6b7280', lineHeight: 18, fontWeight: '600' },
+  cardTitle: { fontSize: 15, fontWeight: '800', color: '#1F2937', marginBottom: 4 },
+  cardDesc:  { fontSize: 12, color: '#6B7280', lineHeight: 18, fontWeight: '500' },
 });
 
 export default DeliveryScreen;

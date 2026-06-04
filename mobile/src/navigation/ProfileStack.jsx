@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import BackButton        from '../components/BackButton';
 import AboutScreen       from '../screens/AboutScreen';
 import DeliveryScreen    from '../screens/DeliveryScreen';
 import NewsletterScreen  from '../screens/NewsletterScreen';
@@ -8,21 +7,12 @@ import ProfileScreen     from '../screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
-const screenOptions = ({ navigation }) => ({
-  headerStyle:         { backgroundColor: '#fff' },
-  headerTintColor:     '#FF4C24',
-  headerTitleStyle:    { color: '#262626', fontWeight: '700', fontSize: 17 },
-  headerShadowVisible: false,
-  headerBackVisible:   false,
-  headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
-});
-
 const ProfileStack = () => (
-  <Stack.Navigator screenOptions={screenOptions}>
-    <Stack.Screen name="ProfileMain" component={ProfileScreen}    options={{ title: 'My Profile' }} />
-    <Stack.Screen name="About"       component={AboutScreen}      options={{ title: 'About Eatzy' }} />
-    <Stack.Screen name="Delivery"    component={DeliveryScreen}   options={{ title: 'Delivery Info' }} />
-    <Stack.Screen name="Newsletter"  component={NewsletterScreen} options={{ title: 'Newsletter' }} />
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+    <Stack.Screen name="About"       component={AboutScreen} />
+    <Stack.Screen name="Delivery"    component={DeliveryScreen} />
+    <Stack.Screen name="Newsletter"  component={NewsletterScreen} />
   </Stack.Navigator>
 );
 

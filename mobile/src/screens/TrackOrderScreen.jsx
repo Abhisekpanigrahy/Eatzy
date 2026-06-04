@@ -153,21 +153,21 @@ const TrackOrderScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f9fafb' },
+  safe: { flex: 1, backgroundColor: '#F9FAFB' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: '#E5E7EB',
   },
   backBtn: {
     paddingVertical: 10,
     paddingRight: 20,
   },
-  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
-  headerSub: { fontSize: 13, color: '#9ca3af', fontWeight: '700' },
+  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1F2937' },
+  headerSub: { fontSize: 13, color: '#6B7280', fontWeight: '700' },
 
   container: { padding: 20 },
   profileCard: {
@@ -176,9 +176,9 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
     shadowColor: '#000',
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.03,
     shadowRadius: 10,
     elevation: 2,
   },
@@ -220,18 +220,18 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 18,
     fontWeight: '900',
-    color: '#1a1a1a',
+    color: '#1F2937',
     marginBottom: 4,
   },
   userEmail: {
     fontSize: 13,
-    color: '#6b7280',
+    color: '#6B7280',
     fontWeight: '600',
     marginBottom: 2,
   },
   userPhone: {
     fontSize: 13,
-    color: '#6b7280',
+    color: '#6B7280',
     fontWeight: '700',
   },
   trackingCard: {
@@ -240,13 +240,13 @@ const styles = StyleSheet.create({
     padding: 24,
     marginBottom: 20,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.04,
     shadowRadius: 15,
     elevation: 4,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
-  trackingTitle: { fontSize: 18, fontWeight: '900', color: '#1a1a1a', marginBottom: 24 },
+  trackingTitle: { fontSize: 18, fontWeight: '900', color: '#1F2937', marginBottom: 24 },
   
   timeline: { paddingLeft: 8 },
   stepRow: { flexDirection: 'row', minHeight: 80 },
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#e5e7eb',
+    borderColor: '#E5E7EB',
     backgroundColor: '#fff',
     zIndex: 2,
     justifyContent: 'center',
@@ -268,16 +268,16 @@ const styles = StyleSheet.create({
   line: {
     width: 2,
     flex: 1,
-    backgroundColor: '#e5e7eb',
+    backgroundColor: '#E5E7EB',
     marginVertical: 4,
   },
   lineCompleted: { backgroundColor: '#FF4C24' },
   
   stepRight: { flex: 1, paddingBottom: 24 },
-  stepTitle: { fontSize: 16, fontWeight: '800', color: '#9ca3af' },
-  stepTitleActive: { color: '#1a1a1a' },
-  stepSub: { fontSize: 13, color: '#6b7280', marginTop: 4, fontWeight: '500' },
-  stepDate: { fontSize: 11, color: '#9ca3af', marginTop: 6, fontWeight: '600' },
+  stepTitle: { fontSize: 16, fontWeight: '800', color: '#9CA3AF' },
+  stepTitleActive: { color: '#1F2937', fontWeight: '900' },
+  stepSub: { fontSize: 13, color: '#6B7280', marginTop: 4, fontWeight: '500' },
+  stepDate: { fontSize: 11, color: '#9CA3AF', marginTop: 6, fontWeight: '600' },
 
   infoCard: {
     backgroundColor: '#fff',
@@ -285,10 +285,10 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
-  infoTitle: { fontSize: 16, fontWeight: '900', color: '#1a1a1a', marginBottom: 12 },
-  addressText: { fontSize: 14, color: '#4b5563', lineHeight: 20, fontWeight: '500' },
+  infoTitle: { fontSize: 16, fontWeight: '900', color: '#1F2937', marginBottom: 12 },
+  addressText: { fontSize: 14, color: '#4B5563', lineHeight: 20, fontWeight: '500' },
 
   homeBtn: {
     backgroundColor: '#FF4C24',
@@ -296,9 +296,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     shadowColor: '#FF4C24',
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.25,
     shadowRadius: 10,
-    elevation: 4,
+    elevation: 6,
   },
   homeBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
 });

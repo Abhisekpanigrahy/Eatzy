@@ -73,15 +73,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '800',
-    color: '#1a1a1a',
+    fontWeight: '900',
+    color: '#1F2937',
     marginBottom: 16,
     letterSpacing: -0.5,
   },
   empty: {
-    color: '#9ca3af',
+    color: '#6B7280',
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '500',
     fontStyle: 'italic',
     paddingLeft: 4,
   },
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   dotInactive: {
     width: 6,
-    backgroundColor: '#e5e7eb',
+    backgroundColor: '#E5E7EB',
   },
 });
 

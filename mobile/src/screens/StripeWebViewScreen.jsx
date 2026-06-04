@@ -77,7 +77,7 @@ const StripeWebViewScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#F9FAFB' },
   webview: { flex: 1 },
   header: {
     flexDirection: 'row',
@@ -85,14 +85,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: '#E5E7EB',
   },
   backBtn: {
     paddingVertical: 10,
     paddingRight: 20,
   },
-  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
-  headerSub: { fontSize: 13, color: '#9ca3af', fontWeight: '700' },
+  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1F2937' },
+  headerSub: { fontSize: 13, color: '#6B7280', fontWeight: '700' },
 });
 
 export default StripeWebViewScreen;

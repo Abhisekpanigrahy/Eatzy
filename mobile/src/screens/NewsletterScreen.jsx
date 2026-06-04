@@ -116,20 +116,20 @@ const NewsletterScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safe:      { flex: 1, backgroundColor: '#f9fafb' },
+  safe: { flex: 1, backgroundColor: '#F9FAFB' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: '#E5E7EB',
   },
   backBtn: {
     paddingVertical: 10,
     paddingRight: 20,
   },
-  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a' },
+  headerTitle: { fontSize: 20, fontWeight: '900', color: '#1F2937' },
 
   container: { flex: 1, padding: 24, justifyContent: 'center' },
 
@@ -138,16 +138,16 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     padding: 32,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.04,
     shadowRadius: 20,
     elevation: 8,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
 
-  topBox:   { alignItems: 'center', marginBottom: 32 },
+  topBox: { alignItems: 'center', marginBottom: 32 },
   promoBadge: {
-    backgroundColor: '#fef2f2',
+    backgroundColor: '#FFF5F2',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 10,
@@ -157,12 +157,12 @@ const styles = StyleSheet.create({
     color: '#FF4C24',
     fontSize: 10,
     fontWeight: '900',
-    letterSpacing: 1,
+    letterSpacing: 1.2,
   },
   title: { 
     fontSize: 26, 
     fontWeight: '900', 
-    color: '#1a1a1a', 
+    color: '#1F2937', 
     textAlign: 'center', 
     marginBottom: 12,
     letterSpacing: -0.5,
@@ -170,19 +170,19 @@ const styles = StyleSheet.create({
   },
   sub: { 
     fontSize: 14, 
-    color: '#6b7280', 
+    color: '#6B7280', 
     textAlign: 'center', 
     lineHeight: 22,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9FAFB',
     borderRadius: 16,
-    borderWidth: 1.5,
-    borderColor: '#f3f4f6',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
     paddingHorizontal: 16,
     height: 56,
     marginBottom: 20,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 15,
-    color: '#1a1a1a',
+    color: '#1F2937',
     fontWeight: '600',
   },
 
@@ -202,16 +202,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#FF4C24',
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 10,
-    elevation: 8,
+    elevation: 6,
     marginBottom: 24,
   },
-  btnDisabled: { backgroundColor: '#fca5a5', elevation: 0 },
-  btnText: { color: '#fff', fontSize: 16, fontWeight: '900' },
+  btnDisabled: { backgroundColor: '#FCA5A5', elevation: 0 },
+  btnText: { color: '#fff', fontSize: 15, fontWeight: '900', textTransform: 'uppercase', letterSpacing: 0.8 },
 
   noteBox: { alignItems: 'center' },
-  noteText: { fontSize: 12, color: '#9ca3af', fontWeight: '700' },
+  noteText: { fontSize: 12, color: '#9CA3AF', fontWeight: '700' },
 
   successBox: {
     backgroundColor: '#fff',
@@ -219,11 +219,11 @@ const styles = StyleSheet.create({
     padding: 40,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.05,
     shadowRadius: 20,
     elevation: 8,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
   successIconWrap: {
     width: 100,
@@ -235,13 +235,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   successIcon: { fontSize: 48 },
-  successTitle: { fontSize: 24, fontWeight: '900', color: '#1a1a1a', marginBottom: 12 },
+  successTitle: { fontSize: 24, fontWeight: '900', color: '#1F2937', marginBottom: 12 },
   successSub: { 
     fontSize: 15, 
-    color: '#6b7280', 
+    color: '#6B7280', 
     textAlign: 'center', 
     lineHeight: 24,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   highlight: { color: '#FF4C24', fontWeight: '800' },
   backHomeBtn: {

@@ -275,15 +275,15 @@ const OrdersScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f9fafb' },
+  safe: { flex: 1, backgroundColor: '#F9FAFB' },
   header: {
     padding: 20,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: '#E5E7EB',
   },
-  headerTitle: { fontSize: 24, fontWeight: '900', color: '#1a1a1a' },
-  headerSub: { fontSize: 13, color: '#6b7280', fontWeight: '600', marginTop: 2 },
+  headerTitle: { fontSize: 24, fontWeight: '900', color: '#1F2937' },
+  headerSub: { fontSize: 13, color: '#6B7280', fontWeight: '600', marginTop: 2 },
 
   list: { padding: 16, paddingBottom: 100 },
   card: {
@@ -292,11 +292,11 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 20,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.04,
     shadowRadius: 15,
     elevation: 4,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -304,8 +304,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 16,
   },
-  orderId: { fontSize: 16, fontWeight: '900', color: '#1a1a1a' },
-  date: { fontSize: 12, color: '#9ca3af', fontWeight: '600', marginTop: 2 },
+  orderId: { fontSize: 16, fontWeight: '900', color: '#1F2937' },
+  date: { fontSize: 12, color: '#9CA3AF', fontWeight: '600', marginTop: 2 },
 
   itemsSection: { marginBottom: 16 },
   itemRow: {
@@ -313,9 +313,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 6,
   },
-  itemText: { fontSize: 14, color: '#4b5563', fontWeight: '600' },
+  itemText: { fontSize: 14, color: '#4B5563', fontWeight: '600' },
   qtyText: { color: '#FF4C24', fontWeight: '800' },
-  itemPrice: { fontSize: 14, color: '#1a1a1a', fontWeight: '700' },
+  itemPrice: { fontSize: 14, color: '#1F2937', fontWeight: '700' },
 
   divider: { height: 1, backgroundColor: '#f3f4f6', marginBottom: 16 },
 
@@ -330,50 +330,50 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 8,
   },
-  pillPaid: { backgroundColor: '#e8f5e9' },
-  pillPending: { backgroundColor: '#fef2f2' },
+  pillPaid: { backgroundColor: '#E6F4EA' },
+  pillPending: { backgroundColor: '#FEE2E2' },
   payPillText: { fontSize: 11, fontWeight: '800' },
-  pillPaidText: { color: '#2d7d32' },
-  pillPendingText: { color: '#ef4444' },
+  pillPaidText: { color: '#137333' },
+  pillPendingText: { color: '#C5221F' },
   methodBadge: {
-    backgroundColor: '#f3f4f6',
+    backgroundColor: '#F1F3F4',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
   },
-  methodText: { fontSize: 11, fontWeight: '800', color: '#6b7280' },
+  methodText: { fontSize: 11, fontWeight: '800', color: '#5F6368' },
 
   totalWrap: { alignItems: 'flex-end' },
-  totalLabel: { fontSize: 10, color: '#9ca3af', fontWeight: '800', textTransform: 'uppercase' },
-  total: { fontSize: 18, fontWeight: '900', color: '#1a1a1a' },
+  totalLabel: { fontSize: 10, color: '#9CA3AF', fontWeight: '800', textTransform: 'uppercase' },
+  total: { fontSize: 18, fontWeight: '900', color: '#1F2937' },
 
   orderActions: {
     marginTop: 16,
     gap: 12,
   },
   trackBtn: {
-    backgroundColor: '#fef2f2',
+    backgroundColor: '#FFF5F2',
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#fee2e2',
+    borderColor: '#FFE0D9',
   },
   trackBtnText: { color: '#FF4C24', fontSize: 14, fontWeight: '800' },
   reviewBtn: {
-    backgroundColor: '#fff7ed',
-    borderColor: '#fdba74',
+    backgroundColor: '#FFF8E1',
+    borderColor: '#FFE082',
   },
   reviewBtnText: {
-    color: '#ea580c',
+    color: '#F57F17',
   },
 
   reviewedBox: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9FAFB',
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#F3F4F6',
   },
   reviewHeaderRow: {
     flexDirection: 'row',
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
   reviewedLabel: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#4b5563',
+    color: '#4B5563',
     textTransform: 'uppercase',
   },
   reviewedStars: {
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   },
   reviewedComment: {
     fontSize: 13,
-    color: '#6b7280',
+    color: '#6B7280',
     fontStyle: 'italic',
     lineHeight: 18,
   },
@@ -420,16 +420,16 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 22,
     fontWeight: '900',
-    color: '#1a1a1a',
+    color: '#1F2937',
   },
   closeBtn: {
     fontSize: 20,
-    color: '#9ca3af',
+    color: '#9CA3AF',
     fontWeight: 'bold',
   },
   modalSub: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#6B7280',
     fontWeight: '600',
     marginBottom: 24,
     lineHeight: 20,
@@ -448,15 +448,15 @@ const styles = StyleSheet.create({
     color: '#fbbf24',
   },
   reviewInput: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9FAFB',
     borderRadius: 16,
     padding: 16,
     fontSize: 15,
-    color: '#1a1a1a',
+    color: '#1F2937',
     height: 120,
     textAlignVertical: 'top',
     borderWidth: 1,
-    borderColor: '#f3f4f6',
+    borderColor: '#E5E7EB',
     marginBottom: 24,
   },
   submitBtn: {
@@ -466,9 +466,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#FF4C24',
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 6,
   },
   submitBtnText: {
     color: '#fff',
@@ -482,8 +483,8 @@ const styles = StyleSheet.create({
     paddingTop: 80,
   },
   emptyEmoji: { fontSize: 80, marginBottom: 20 },
-  emptyTitle: { fontSize: 24, fontWeight: '900', color: '#1a1a1a', marginBottom: 12 },
-  emptySub: { fontSize: 15, color: '#6b7280', textAlign: 'center', paddingHorizontal: 40, lineHeight: 22 },
+  emptyTitle: { fontSize: 24, fontWeight: '900', color: '#1F2937', marginBottom: 12 },
+  emptySub: { fontSize: 15, color: '#6B7280', textAlign: 'center', paddingHorizontal: 40, lineHeight: 22, fontWeight: '500' },
 });
 
 export default OrdersScreen;

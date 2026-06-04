@@ -2,13 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const STATUS_COLORS = {
-  'Food Processing': { bg: '#fff4e5', text: '#e68a00' },
-  'Out for Delivery': { bg: '#e5f0ff', text: '#1a62d4' },
-  'Delivered': { bg: '#e6f9f0', text: '#1a9e5c' },
+  'food processing': { bg: '#FFF5F2', text: '#FF4C24' },
+  'out for delivery': { bg: '#EBF3FE', text: '#1A73E8' },
+  'delivered': { bg: '#E6F4EA', text: '#137333' },
 };
 
 const OrderStatusBadge = ({ status }) => {
-  const colors = STATUS_COLORS[status] || { bg: '#f0f0f0', text: '#555' };
+  const normStatus = (status || '').toLowerCase();
+  const colors = STATUS_COLORS[normStatus] || { bg: '#F1F3F4', text: '#5F6368' };
   return (
     <View style={[styles.badge, { backgroundColor: colors.bg }]}>
       <Text style={[styles.text, { color: colors.text }]}>{status}</Text>
@@ -19,13 +20,16 @@ const OrderStatusBadge = ({ status }) => {
 const styles = StyleSheet.create({
   badge: {
     paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 50,
+    paddingVertical: 6,
+    borderRadius: 20,
     alignSelf: 'flex-start',
+    borderWidth: 0.5,
+    borderColor: 'rgba(0,0,0,0.03)',
   },
   text: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '800',
+    textTransform: 'capitalize',
   },
 });
 

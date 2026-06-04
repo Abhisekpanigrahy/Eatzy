@@ -21,7 +21,8 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.abhisek_panigrahy.eatzymobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"

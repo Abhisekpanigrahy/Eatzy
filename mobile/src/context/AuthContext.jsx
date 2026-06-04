@@ -3,6 +3,7 @@ import { login as apiLogin, register as apiRegister } from '../api/authApi';
 import { getToken, setToken, removeToken } from '../storage/storageHelpers';
 import * as OrderPollingService from '../services/OrderPollingService';
 import { requestPermissionsIfNeeded } from '../services/NotificationService';
+import { getApiErrorMessage } from '../utils/apiErrors';
 
 const AuthContext = createContext(null);
 
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (e) {
-      setError(e?.response?.data?.message || e.message || 'Login failed');
+      setError(getApiErrorMessage(e, 'Login failed'));
       return false;
     }
   };
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (e) {
-      setError(e?.response?.data?.message || e.message || 'Registration failed');
+      setError(getApiErrorMessage(e, 'Registration failed'));
       return false;
     }
   };
@@ -78,8 +79,10 @@ export const AuthProvider = ({ children }) => {
     removeToken().catch(() => {});
   };
 
+  const clearError = () => setError(null);
+
   return (
-    <AuthContext.Provider value={{ token, user, loading, error, login, register, logout }}>
+    <AuthContext.Provider value={{ token, user, loading, error, login, register, logout, clearError }}>
       {children}
     </AuthContext.Provider>
   );

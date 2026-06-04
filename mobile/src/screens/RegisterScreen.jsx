@@ -14,7 +14,7 @@ import { useAuth } from '../context/AuthContext';
 import BackArrow from '../components/BackArrow';
 
 const RegisterScreen = ({ navigation }) => {
-  const { register, error } = useAuth();
+  const { register, error, clearError } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,6 +51,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleNameChange = (val) => {
     setName(val);
+    if (error) clearError();
     if (errors.name) {
       setErrors((prev) => ({ ...prev, name: null }));
     }
@@ -58,6 +59,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleEmailChange = (val) => {
     setEmail(val);
+    if (error) clearError();
     if (errors.email) {
       setErrors((prev) => ({ ...prev, email: null }));
     }
@@ -65,6 +67,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handlePasswordChange = (val) => {
     setPassword(val);
+    if (error) clearError();
     if (errors.password) {
       setErrors((prev) => ({ ...prev, password: null }));
     }

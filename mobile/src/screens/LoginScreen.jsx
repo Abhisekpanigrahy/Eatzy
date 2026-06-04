@@ -14,7 +14,7 @@ import { useAuth } from '../context/AuthContext';
 import BackArrow from '../components/BackArrow';
 
 const LoginScreen = ({ navigation }) => {
-  const { login, error } = useAuth();
+  const { login, error, clearError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -44,6 +44,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleEmailChange = (val) => {
     setEmail(val);
+    if (error) clearError();
     if (errors.email) {
       setErrors((prev) => ({ ...prev, email: null }));
     }
@@ -51,6 +52,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handlePasswordChange = (val) => {
     setPassword(val);
+    if (error) clearError();
     if (errors.password) {
       setErrors((prev) => ({ ...prev, password: null }));
     }

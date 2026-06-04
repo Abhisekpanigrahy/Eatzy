@@ -31,4 +31,6 @@ app.use("/api/newsletter", newsletterRouter);
 // Health check
 app.get("/", (req, res) => res.send("Eatzy API Running ✅"));
 
-app.listen(port, () => console.log(`Server started on http://localhost:${port}`));
+app.listen(port, "0.0.0.0", () =>
+  console.log(`Server started on http://localhost:${port} (LAN: use your machine's IP)`)
+);

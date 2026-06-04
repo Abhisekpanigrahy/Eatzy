@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../context/AuthContext';
 
 const RegisterScreen = ({ navigation }) => {
@@ -32,114 +33,216 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        <Text style={styles.logo}>Eatzy<Text style={styles.dot}>.</Text></Text>
-        <Text style={styles.heading}>Create account</Text>
-        <Text style={styles.subheading}>Join Eatzy and start ordering</Text>
-
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="John Doe"
-            placeholderTextColor="#aaa"
-            value={name}
-            onChangeText={setName}
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="you@email.com"
-            placeholderTextColor="#aaa"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="••••••••"
-            placeholderTextColor="#aaa"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
-
-        <TouchableOpacity
-          style={[styles.btn, loading && styles.btnDisabled]}
-          onPress={handleRegister}
-          disabled={loading}
+    <SafeAreaView style={styles.safe}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView 
+          contentContainerStyle={styles.container} 
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.btnText}>{loading ? 'Creating account…' : 'Create Account'}</Text>
-        </TouchableOpacity>
+          <View style={styles.topSection}>
+            <Text style={styles.logo}>Eatzy<Text style={styles.dot}>.</Text></Text>
+            <Text style={styles.heading}>Create account</Text>
+            <Text style={styles.subheading}>Join Eatzy and start ordering today!</Text>
+          </View>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Already have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.link}>Sign In</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          <View style={styles.form}>
+            {error ? (
+              <View style={styles.errorBox}>
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            ) : null}
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Full Name</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputIcon}>👤</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="John Doe"
+                  placeholderTextColor="#9ca3af"
+                  value={name}
+                  onChangeText={setName}
+                />
+              </View>
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Email Address</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputIcon}>📧</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="name@example.com"
+                  placeholderTextColor="#9ca3af"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputIcon}>🔒</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="••••••••"
+                  placeholderTextColor="#9ca3af"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                />
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={[styles.btn, loading && styles.btnDisabled]}
+              onPress={handleRegister}
+              disabled={loading}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnText}>{loading ? 'Creating account...' : 'Create Account'}</Text>
+            </TouchableOpacity>
+
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Already have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.link}>Sign In</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: '#fff' },
   container: {
     flexGrow: 1,
-    padding: 28,
+    padding: 24,
     justifyContent: 'center',
-    backgroundColor: '#fff',
   },
-  logo: { fontSize: 36, fontWeight: '800', color: '#FF4C24', letterSpacing: -1, marginBottom: 24 },
-  dot: { color: '#49557E' },
-  heading: { fontSize: 26, fontWeight: '700', color: '#262626', marginBottom: 4 },
-  subheading: { fontSize: 15, color: '#676767', marginBottom: 28 },
-  error: {
-    backgroundColor: '#fff0ee',
+  topSection: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  logo: {
+    fontSize: 48,
+    fontWeight: '900',
     color: '#FF4C24',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-    fontSize: 14,
+    letterSpacing: -2,
   },
-  inputGroup: { marginBottom: 16 },
-  label: { fontSize: 13, fontWeight: '500', color: '#262626', marginBottom: 6 },
-  input: {
-    borderWidth: 1,
-    borderColor: '#e2e2e7',
-    borderRadius: 10,
-    padding: 14,
+  dot: { color: '#1a1a1a' },
+  heading: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: '#1a1a1a',
+    marginTop: 16,
+    letterSpacing: -0.5,
+  },
+  subheading: {
     fontSize: 15,
-    color: '#262626',
+    color: '#6b7280',
+    marginTop: 8,
+    fontWeight: '600',
   },
+
+  form: {
+    width: '100%',
+  },
+  errorBox: {
+    backgroundColor: '#fef2f2',
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fee2e2',
+    marginBottom: 20,
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 13,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+
+  inputGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#4b5563',
+    marginBottom: 8,
+    marginLeft: 4,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9fafb',
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: '#f3f4f6',
+    paddingHorizontal: 16,
+    height: 56,
+  },
+  inputIcon: {
+    fontSize: 18,
+    marginRight: 12,
+  },
+  input: {
+    flex: 1,
+    fontSize: 15,
+    color: '#1a1a1a',
+    fontWeight: '600',
+  },
+
   btn: {
     backgroundColor: '#FF4C24',
-    padding: 16,
-    borderRadius: 50,
+    height: 56,
+    borderRadius: 16,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 8,
+    shadowColor: '#FF4C24',
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 8,
+    marginTop: 10,
+    marginBottom: 24,
   },
-  btnDisabled: { opacity: 0.6 },
-  btnText: { color: '#fff', fontWeight: '700', fontSize: 16 },
-  footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 24 },
-  footerText: { color: '#676767', fontSize: 14 },
-  link: { color: '#FF4C24', fontWeight: '600', fontSize: 14 },
+  btnDisabled: {
+    backgroundColor: '#fca5a5',
+    elevation: 0,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '900',
+  },
+
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 15,
+    color: '#6b7280',
+    fontWeight: '600',
+  },
+  link: {
+    fontSize: 15,
+    color: '#FF4C24',
+    fontWeight: '800',
+  },
 });
 
 export default RegisterScreen;

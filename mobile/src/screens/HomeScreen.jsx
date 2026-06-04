@@ -1,19 +1,52 @@
 import React, { useMemo, useState } from 'react';
 import {
   FlatList,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  StatusBar,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ErrorState        from '../components/ErrorState';
 import FavoritesSection  from '../components/FavoritesSection';
 import FoodCard          from '../components/FoodCard';
 import LoadingSpinner    from '../components/LoadingSpinner';
 import PromoBanner       from '../components/PromoBanner';
 import { useFoods }      from '../context/FoodContext';
+
+/* ─── Premium Header ────────────────────────────────────────────────────── */
+const HomeHeader = ({ searchQuery, setSearchQuery }) => (
+  <View style={styles.headerContainer}>
+    <View style={styles.locationRow}>
+      <View>
+        <Text style={styles.deliveryLabel}>Delivery to</Text>
+        <View style={styles.addressRow}>
+          <Text style={styles.addressText}>Your Home, Surat</Text>
+          <Text style={styles.downArrow}>▼</Text>
+        </View>
+      </View>
+      <TouchableOpacity style={styles.profileIconWrap}>
+        <Text style={styles.profileEmoji}>👤</Text>
+      </TouchableOpacity>
+    </View>
+
+    <View style={styles.searchContainer}>
+      <Text style={styles.searchIcon}>🔍</Text>
+      <TextInput
+        style={styles.searchInputPremium}
+        placeholder="Search for 'Pizza' or 'Burger'"
+        placeholderTextColor="#9ca3af"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        returnKeyType="search"
+      />
+      <View style={styles.searchDivider} />
+      <Text style={styles.micIcon}>🎙️</Text>
+    </View>
+  </View>
+);
 
 /* ─── Newsletter strip ───────────────────────────────────────────────────── */
 const NewsletterStrip = ({ onPress }) => (
@@ -22,35 +55,25 @@ const NewsletterStrip = ({ onPress }) => (
       <Text style={styles.nlTitle}>Subscribe & get 20% off 🎁</Text>
       <Text style={styles.nlSub}>Join our food lovers community</Text>
     </View>
-    <Text style={styles.nlArrow}>›</Text>
+    <View style={styles.nlAction}>
+      <Text style={styles.nlArrow}>›</Text>
+    </View>
   </TouchableOpacity>
-);
-
-/* ─── Quick-links row (About / Delivery) ─────────────────────────────────── */
-const QuickLinks = ({ onAbout, onDelivery }) => (
-  <View style={styles.quickRow}>
-    <TouchableOpacity style={styles.quickBtn} onPress={onAbout} activeOpacity={0.8}>
-      <Text style={styles.quickIcon}>ℹ️</Text>
-      <Text style={styles.quickLabel}>About</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.quickBtn} onPress={onDelivery} activeOpacity={0.8}>
-      <Text style={styles.quickIcon}>🚚</Text>
-      <Text style={styles.quickLabel}>Delivery</Text>
-    </TouchableOpacity>
-  </View>
 );
 
 /* ─── Policy badges ──────────────────────────────────────────────────────── */
 const PolicyBadges = () => (
   <View style={styles.policyRow}>
     {[
-      { icon: '⚡', label: 'Fast Delivery' },
-      { icon: '🔄', label: 'Easy Reorder' },
-      { icon: '🛡️', label: 'Safe & Fresh' },
-      { icon: '💬', label: '24/7 Support' },
+      { icon: '⚡', label: 'Fast Delivery', color: '#FFF9C4' },
+      { icon: '🔄', label: 'Easy Reorder', color: '#E1F5FE' },
+      { icon: '🛡️', label: 'Safe & Fresh', color: '#E8F5E9' },
+      { icon: '💬', label: '24/7 Support', color: '#F3E5F5' },
     ].map((p) => (
       <View key={p.label} style={styles.policyCard}>
-        <Text style={styles.policyIcon}>{p.icon}</Text>
+        <View style={[styles.policyIconCircle, { backgroundColor: p.color }]}>
+          <Text style={styles.policyIcon}>{p.icon}</Text>
+        </View>
         <Text style={styles.policyLabel}>{p.label}</Text>
       </View>
     ))}
@@ -61,6 +84,7 @@ const PolicyBadges = () => (
 const HomeScreen = ({ navigation }) => {
   const { foods, loading, error, retryFetch } = useFoods();
   const [searchQuery, setSearchQuery] = useState('');
+  const insets = useSafeAreaInsets();
 
   const filteredFoods = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -79,56 +103,31 @@ const HomeScreen = ({ navigation }) => {
   if (error)   return <ErrorState message={error} onRetry={retryFetch} />;
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       <FlatList
         data={filteredFoods}
         keyExtractor={(item) => item._id}
         numColumns={2}
         columnWrapperStyle={styles.row}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={[styles.list, { paddingBottom: 100 }]}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View>
-            {/* App header */}
-            <View style={styles.header}>
-              <Text style={styles.logo}>
-                Eatzy<Text style={styles.dot}>.</Text>
-              </Text>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Search food…"
-                placeholderTextColor="#aaa"
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                returnKeyType="search"
-                clearButtonMode="while-editing"
-              />
-            </View>
+            <HomeHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-            {/* Hero banner + category chips */}
             <PromoBanner
               onCategoryPress={(cat) => navigation.navigate('MenuTab', { screen: 'MenuMain', params: { category: cat } })}
             />
 
-            {/* Policy badges */}
             <PolicyBadges />
 
-            {/* Favorites row */}
             <FavoritesSection
               onFoodPress={handleFoodPress}
               onLoginRequired={handleLoginRequired}
             />
 
-            {/* Newsletter */}
             <NewsletterStrip onPress={() => navigation.navigate('Newsletter')} />
 
-            {/* Quick links */}
-            <QuickLinks
-              onAbout={() => navigation.navigate('About')}
-              onDelivery={() => navigation.navigate('Delivery')}
-            />
-
-            {/* Section heading */}
             <Text style={styles.sectionTitle}>
               {searchQuery ? `Results for "${searchQuery}"` : 'All Dishes'}
             </Text>
@@ -147,76 +146,151 @@ const HomeScreen = ({ navigation }) => {
           </View>
         )}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safe:  { flex: 1, backgroundColor: '#FCFCFC' },
+  safe:  { flex: 1, backgroundColor: '#FFF' },
   list:  { padding: 16, paddingBottom: 32 },
 
-  header:      { marginBottom: 20 },
-  logo:        { fontSize: 30, fontWeight: '800', color: '#FF4C24', letterSpacing: -1, marginBottom: 12 },
-  dot:         { color: '#49557E' },
-  searchInput: {
-    backgroundColor: '#fff',
+  /* Premium Header */
+  headerContainer: {
+    marginBottom: 16,
+  },
+  locationRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  deliveryLabel: {
+    fontSize: 12,
+    color: '#FF4C24',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  addressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  addressText: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#2d2d2d',
+  },
+  downArrow: {
+    fontSize: 10,
+    color: '#2d2d2d',
+    marginLeft: 4,
+    marginTop: 2,
+  },
+  profileIconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#f3f4f6',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#e2e2e7',
-    borderRadius: 12,
-    padding: 12,
+    borderColor: '#e5e7eb',
+  },
+  profileEmoji: {
+    fontSize: 20,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  searchIcon: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  searchInputPremium: {
+    flex: 1,
     fontSize: 15,
-    color: '#262626',
+    color: '#2d2d2d',
+    height: '100%',
+  },
+  searchDivider: {
+    width: 1,
+    height: 20,
+    backgroundColor: '#e5e7eb',
+    marginHorizontal: 12,
+  },
+  micIcon: {
+    fontSize: 18,
+    color: '#FF4C24',
   },
 
   /* Policy */
   policyRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 24,
     gap: 8,
   },
   policyCard: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 10,
     alignItems: 'center',
-    shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 4, elevation: 1,
   },
-  policyIcon:  { fontSize: 20, marginBottom: 4 },
-  policyLabel: { fontSize: 10, fontWeight: '600', color: '#49557E', textAlign: 'center' },
+  policyIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 1,
+  },
+  policyIcon:  { fontSize: 22 },
+  policyLabel: { fontSize: 10, fontWeight: '700', color: '#4b5563', textAlign: 'center' },
 
   /* Newsletter */
   newsletterStrip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff4f2',
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#ffd5c8',
-  },
-  nlTitle: { fontSize: 15, fontWeight: '700', color: '#FF4C24', marginBottom: 2 },
-  nlSub:   { fontSize: 12, color: '#6b7280' },
-  nlArrow: { fontSize: 24, color: '#FF4C24', fontWeight: '700' },
-
-  /* Quick links */
-  quickRow: { flexDirection: 'row', gap: 12, marginBottom: 20 },
-  quickBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
     backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 14,
-    shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 4, elevation: 1,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#fee2e2',
+    shadowColor: '#FF4C24',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 15,
+    elevation: 2,
   },
-  quickIcon:  { fontSize: 20 },
-  quickLabel: { fontSize: 14, fontWeight: '600', color: '#262626' },
+  nlTitle: { fontSize: 16, fontWeight: '800', color: '#2d2d2d', marginBottom: 2 },
+  nlSub:   { fontSize: 13, color: '#6b7280' },
+  nlAction: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#fef2f2',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nlArrow: { fontSize: 20, color: '#FF4C24', fontWeight: '700' },
 
-  sectionTitle: { fontSize: 20, fontWeight: '600', color: '#262626', marginBottom: 12, marginTop: 4 },
+  sectionTitle: { fontSize: 22, fontWeight: '800', color: '#2d2d2d', marginBottom: 16, marginTop: 4 },
   row:      { justifyContent: 'space-between' },
   cardWrap: { width: '48%', marginBottom: 16 },
   empty:    { textAlign: 'center', color: '#676767', fontSize: 15, marginTop: 24 },

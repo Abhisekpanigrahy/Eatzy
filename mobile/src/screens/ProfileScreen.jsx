@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,12 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import apiClient from '../api/apiClient';
 import { useAuth } from '../context/AuthContext';
 
 const MenuItem = ({ icon, label, onPress, danger }) => (
   <TouchableOpacity style={styles.menuItem} onPress={onPress} activeOpacity={0.7}>
-    <Text style={[styles.menuIcon, danger && { color: '#ef4444' }]}>{icon}</Text>
+    <View style={[styles.menuIconWrap, danger && { backgroundColor: '#fef2f2' }]}>
+      <Text style={[styles.menuIcon, danger && { color: '#ef4444' }]}>{icon}</Text>
+    </View>
     <Text style={[styles.menuLabel, danger && { color: '#ef4444' }]}>{label}</Text>
     <Text style={styles.menuArrow}>›</Text>
   </TouchableOpacity>
@@ -25,6 +27,7 @@ const ProfileScreen = ({ navigation }) => {
   const [profile, setProfile]   = useState({ name: '', phone: '', address: '' });
   const [editing, setEditing]   = useState(false);
   const [saving, setSaving]     = useState(false);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     // Load profile from backend
@@ -69,21 +72,47 @@ const ProfileScreen = ({ navigation }) => {
   const initials = (user?.name || profile.name || '?').charAt(0).toUpperCase();
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        {/* Avatar */}
-        <View style={styles.avatarWrap}>
+        {/* Avatar Section */}
+        <View style={styles.avatarCard}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>{initials}</Text>
+            <TouchableOpacity style={styles.editAvatarBtn}>
+              <Text style={styles.editAvatarText}>✏️</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.name}>{user?.name || profile.name || 'User'}</Text>
-          <Text style={styles.email}>{user?.email || ''}</Text>
+          <Text style={styles.name}>{user?.name || profile.name || 'Foodie'}</Text>
+          <Text style={styles.email}>{user?.email || 'Welcome to Eatzy'}</Text>
+        </View>
+
+        {/* Stats Row */}
+        <View style={styles.statsRow}>
+          <View style={styles.statBox}>
+            <Text style={styles.statVal}>12</Text>
+            <Text style={styles.statLab}>Orders</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statBox}>
+            <Text style={styles.statVal}>4</Text>
+            <Text style={styles.statLab}>Reviews</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statBox}>
+            <Text style={styles.statVal}>8</Text>
+            <Text style={styles.statLab}>Favs</Text>
+          </View>
         </View>
 
         {/* Edit profile form */}
         {editing ? (
           <View style={styles.formCard}>
-            <Text style={styles.formTitle}>Edit Profile</Text>
+            <View style={styles.formHeader}>
+              <Text style={styles.formTitle}>Edit Profile</Text>
+              <TouchableOpacity onPress={() => setEditing(false)}>
+                <Text style={styles.cancelText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
             {[
               { key: 'name',    label: 'Full Name',   placeholder: 'Your name' },
               { key: 'phone',   label: 'Phone',        placeholder: '+91 ...' },
@@ -96,89 +125,217 @@ const ProfileScreen = ({ navigation }) => {
                   value={profile[key]}
                   onChangeText={(v) => setProfile((p) => ({ ...p, [key]: v }))}
                   placeholder={placeholder}
-                  placeholderTextColor="#bbb"
+                  placeholderTextColor="#9ca3af"
                 />
               </View>
             ))}
-            <View style={styles.formBtns}>
-              <TouchableOpacity
-                style={[styles.btn, styles.btnOutline]}
-                onPress={() => setEditing(false)}
-              >
-                <Text style={styles.btnOutlineText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.btn, styles.btnPrimary, saving && styles.btnDisabled]}
-                onPress={saveProfile}
-                disabled={saving}
-              >
-                <Text style={styles.btnPrimaryText}>{saving ? 'Saving…' : 'Save'}</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity 
+              style={[styles.saveBtn, saving && { opacity: 0.7 }]} 
+              onPress={saveProfile}
+              disabled={saving}
+            >
+              <Text style={styles.saveBtnText}>{saving ? 'Saving...' : 'Save Changes'}</Text>
+            </TouchableOpacity>
           </View>
         ) : (
-          <View style={styles.menuCard}>
-            <MenuItem icon="✏️" label="Edit Profile"   onPress={() => setEditing(true)} />
-            <MenuItem icon="📦" label="My Orders"      onPress={() => navigation.navigate('OrdersTab')} />
-            <MenuItem icon="❤️" label="Wishlist"       onPress={() => navigation.navigate('MenuTab')} />
-            <MenuItem icon="ℹ️" label="About Eatzy"    onPress={() => navigation.navigate('About')} />
-            <MenuItem icon="🚚" label="Delivery Info"  onPress={() => navigation.navigate('Delivery')} />
-            <MenuItem icon="📞" label="Contact Us"     onPress={() => {}} />
-            <MenuItem icon="🚪" label="Logout"         onPress={handleLogout} danger />
+          <View style={styles.menuSection}>
+            <Text style={styles.sectionHeading}>My Account</Text>
+            <MenuItem icon="👤" label="Personal Information" onPress={() => setEditing(true)} />
+            <MenuItem icon="📦" label="Order History" onPress={() => navigation.navigate('OrdersTab')} />
+            <MenuItem icon="❤️" label="My Favorites" onPress={() => navigation.navigate('HomeTab')} />
+            <MenuItem icon="📍" label="Saved Addresses" onPress={() => {}} />
+            
+            <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Support & Legal</Text>
+            <MenuItem icon="❓" label="Help & Support" onPress={() => {}} />
+            <MenuItem icon="🛡️" label="Privacy Policy" onPress={() => {}} />
+            <MenuItem icon="🚪" label="Logout" onPress={handleLogout} danger />
           </View>
         )}
+        <View style={{ height: 120 }} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#FCFCFC' },
-  container: { padding: 20, paddingBottom: 48 },
-
-  avatarWrap: { alignItems: 'center', marginBottom: 28, marginTop: 10 },
-  avatar: {
-    width: 90, height: 90, borderRadius: 45,
-    backgroundColor: '#FF4C24',
-    justifyContent: 'center', alignItems: 'center', marginBottom: 12,
+  safe: { flex: 1, backgroundColor: '#FFF' },
+  container: { padding: 20 },
+  
+  avatarCard: {
+    alignItems: 'center',
+    marginBottom: 24,
   },
-  avatarText: { color: '#fff', fontSize: 36, fontWeight: '700' },
-  name:  { fontSize: 20, fontWeight: '700', color: '#262626' },
-  email: { fontSize: 13, color: '#9ca3af', marginTop: 4 },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#fef2f2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 4,
+    borderColor: '#fff',
+    shadowColor: '#FF4C24',
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 8,
+    position: 'relative',
+  },
+  avatarText: {
+    fontSize: 40,
+    fontWeight: '900',
+    color: '#FF4C24',
+  },
+  editAvatarBtn: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    elevation: 4,
+  },
+  editAvatarText: { fontSize: 14 },
+  name: {
+    fontSize: 24,
+    fontWeight: '900',
+    color: '#1a1a1a',
+    marginTop: 16,
+    letterSpacing: -0.5,
+  },
+  email: {
+    fontSize: 14,
+    color: '#6b7280',
+    marginTop: 4,
+    fontWeight: '600',
+  },
 
-  menuCard: {
-    backgroundColor: '#fff', borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, elevation: 2,
+  statsRow: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 32,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  statBox: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statVal: {
+    fontSize: 18,
+    fontWeight: '900',
+    color: '#1a1a1a',
+  },
+  statLab: {
+    fontSize: 12,
+    color: '#9ca3af',
+    fontWeight: '700',
+    marginTop: 2,
+  },
+  statDivider: {
+    width: 1,
+    height: '100%',
+    backgroundColor: '#f3f4f6',
+  },
+
+  menuSection: {},
+  sectionHeading: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#9ca3af',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 16,
+    marginLeft: 4,
   },
   menuItem: {
-    flexDirection: 'row', alignItems: 'center',
-    paddingVertical: 15, paddingHorizontal: 18,
-    borderBottomWidth: 1, borderBottomColor: '#f3f4f6',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f9fafb',
   },
-  menuIcon:  { fontSize: 20, width: 30 },
-  menuLabel: { flex: 1, fontSize: 15, color: '#262626', fontWeight: '500' },
-  menuArrow: { fontSize: 20, color: '#d1d5db' },
+  menuIconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#f9fafb',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  menuIcon: { fontSize: 18 },
+  menuLabel: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#2d2d2d',
+  },
+  menuArrow: {
+    fontSize: 20,
+    color: '#d1d5db',
+    fontWeight: '700',
+  },
 
   formCard: {
-    backgroundColor: '#fff', borderRadius: 16, padding: 20,
-    shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, elevation: 2,
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 15,
+    elevation: 4,
   },
-  formTitle: { fontSize: 18, fontWeight: '700', color: '#262626', marginBottom: 16 },
-  fieldWrap: { marginBottom: 14 },
-  fieldLabel: { fontSize: 13, fontWeight: '600', color: '#49557E', marginBottom: 6 },
+  formHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  formTitle: { fontSize: 18, fontWeight: '900', color: '#1a1a1a' },
+  cancelText: { color: '#6b7280', fontWeight: '700' },
+  fieldWrap: { marginBottom: 20 },
+  fieldLabel: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#4b5563',
+    marginBottom: 8,
+    marginLeft: 2,
+  },
   input: {
-    borderWidth: 1.5, borderColor: '#e5e7eb', borderRadius: 10,
-    paddingHorizontal: 14, paddingVertical: 10,
-    fontSize: 14, color: '#262626',
+    backgroundColor: '#f9fafb',
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 15,
+    color: '#1a1a1a',
+    fontWeight: '600',
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
   },
-  formBtns: { flexDirection: 'row', gap: 12, marginTop: 8 },
-  btn: { flex: 1, padding: 13, borderRadius: 50, alignItems: 'center' },
-  btnOutline: { borderWidth: 1.5, borderColor: '#FF4C24' },
-  btnOutlineText: { color: '#FF4C24', fontWeight: '700', fontSize: 15 },
-  btnPrimary: { backgroundColor: '#FF4C24' },
-  btnPrimaryText: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  btnDisabled: { opacity: 0.6 },
+  saveBtn: {
+    backgroundColor: '#FF4C24',
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    marginTop: 8,
+    shadowColor: '#FF4C24',
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  saveBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
 });
 
 export default ProfileScreen;

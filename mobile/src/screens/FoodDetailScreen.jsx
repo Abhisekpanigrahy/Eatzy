@@ -4,14 +4,15 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  StatusBar,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import apiClient          from '../api/apiClient';
 import { getFoodImageUrl } from '../api/foodApi';
 import { useAuth }         from '../context/AuthContext';
@@ -33,11 +34,18 @@ const StarPicker = ({ value, onChange }) => (
 const ReviewCard = ({ review }) => (
   <View style={styles.reviewCard}>
     <View style={styles.reviewHeader}>
-      <Text style={styles.reviewUser}>{review.userName || 'Anonymous'}</Text>
-      <Text style={styles.reviewStars}>{'★'.repeat(review.rating)}</Text>
-      <Text style={styles.reviewDate}>
-        {review.date ? new Date(review.date).toLocaleDateString() : ''}
-      </Text>
+      <View style={styles.reviewAvatar}>
+        <Text style={styles.avatarText}>{review.userName?.charAt(0) || 'A'}</Text>
+      </View>
+      <View style={styles.reviewInfo}>
+        <Text style={styles.reviewUser}>{review.userName || 'Anonymous'}</Text>
+        <Text style={styles.reviewDate}>
+          {review.date ? new Date(review.date).toLocaleDateString() : ''}
+        </Text>
+      </View>
+      <View style={styles.reviewRatingBadge}>
+        <Text style={styles.badgeStars}>{review.rating} ★</Text>
+      </View>
     </View>
     <Text style={styles.reviewText}>{review.text}</Text>
   </View>
@@ -49,6 +57,7 @@ const FoodDetailScreen = ({ route, navigation }) => {
   const { token, user }  = useAuth();
   const { cartData, addToCart, removeFromCart } = useCart();
   const { isFavorite, toggleFavorite }          = useFavorites();
+  const insets = useSafeAreaInsets();
 
   const [reviews, setReviews]       = useState(item.reviews || []);
   const [reviewText, setReviewText] = useState('');
@@ -86,6 +95,7 @@ const FoodDetailScreen = ({ route, navigation }) => {
         setReviews(res.data.data.reviews || []);
         setReviewText('');
         setRating(5);
+        Alert.alert('Review Submitted', 'Thank you for your feedback!');
       } else {
         Alert.alert('Error', res.data.message || 'Failed to submit review');
       }
@@ -97,181 +107,319 @@ const FoodDetailScreen = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={styles.main}>
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Food image */}
-          <Image
-            source={{ uri: getFoodImageUrl(item.image) }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-
-          <View style={styles.body}>
-            {/* Title row */}
-            <View style={styles.titleRow}>
-              <Text style={styles.name}>{item.name}</Text>
-              <TouchableOpacity onPress={() => toggleFavorite(item._id)}>
-                <Text style={styles.heart}>{favorited ? '❤️' : '🤍'}</Text>
+        <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+          {/* Header Image Section */}
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: getFoodImageUrl(item.image) }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+            <View style={[styles.headerOverlay, { paddingTop: insets.top || 20 }]}>
+              <TouchableOpacity style={styles.roundBtn} onPress={() => navigation.goBack()}>
+                <Text style={styles.btnIcon}>←</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.roundBtn} onPress={() => toggleFavorite(item._id)}>
+                <Text style={styles.btnIcon}>{favorited ? '❤️' : '🤍'}</Text>
               </TouchableOpacity>
             </View>
+          </View>
 
-            <Text style={styles.category}>{item.category}</Text>
+          <View style={styles.content}>
+            <View style={styles.mainCard}>
+              <View style={styles.titleRow}>
+                <View style={styles.titleContent}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.category}>{item.category}</Text>
+                </View>
+                <View style={styles.ratingBadge}>
+                  <Text style={styles.ratingVal}>{avgRating} ★</Text>
+                  <Text style={styles.ratingTotal}>{reviews.length} reviews</Text>
+                </View>
+              </View>
 
-            {/* Rating summary */}
-            <View style={styles.ratingRow}>
-              <Text style={styles.ratingValue}>{avgRating}</Text>
-              <Text style={styles.ratingStars}>{'★'.repeat(Math.round(Number(avgRating)))}</Text>
-              <Text style={styles.ratingCount}>({reviews.length} reviews)</Text>
+              <View style={styles.divider} />
+
+              <View style={styles.infoRow}>
+                <View style={styles.infoItem}>
+                  <Text style={styles.infoIcon}>⏲️</Text>
+                  <Text style={styles.infoText}>25 mins</Text>
+                </View>
+                <View style={styles.infoDivider} />
+                <View style={styles.infoItem}>
+                  <Text style={styles.infoIcon}>💰</Text>
+                  <Text style={styles.infoText}>${item.price}</Text>
+                </View>
+                <View style={styles.infoDivider} />
+                <View style={styles.infoItem}>
+                  <Text style={styles.infoIcon}>🥗</Text>
+                  <Text style={styles.infoText}>Veg</Text>
+                </View>
+              </View>
             </View>
 
-            <Text style={styles.description}>{item.description}</Text>
-            <Text style={styles.price}>${item.price}</Text>
-
-            {/* Add to cart / counter */}
-            <View style={styles.actions}>
-              {qty === 0 ? (
-                <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
-                  <Text style={styles.addBtnText}>Add to Cart</Text>
-                </TouchableOpacity>
-              ) : (
-                <View style={styles.counter}>
-                  <TouchableOpacity style={styles.counterBtn} onPress={handleRemove}>
-                    <Text style={styles.counterBtnText}>−</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.qty}>{qty}</Text>
-                  <TouchableOpacity style={styles.counterBtn} onPress={handleAdd}>
-                    <Text style={styles.counterBtnText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>About this dish</Text>
+              <Text style={styles.description}>{item.description}</Text>
             </View>
 
             {/* Reviews section */}
-            <View style={styles.reviewsSection}>
-              <Text style={styles.reviewsTitle}>Customer Reviews</Text>
+            <View style={styles.reviewsContainer}>
+              <View style={styles.reviewsHeader}>
+                <Text style={styles.sectionTitle}>Customer Reviews</Text>
+                <TouchableOpacity>
+                  <Text style={styles.viewAll}>View All</Text>
+                </TouchableOpacity>
+              </View>
 
               {/* Write review */}
-              <View style={styles.writeReview}>
-                <Text style={styles.writeLabel}>Your Rating</Text>
+              <View style={styles.writeReviewCard}>
+                <Text style={styles.writeTitle}>Rate your experience</Text>
                 <StarPicker value={rating} onChange={setRating} />
                 <TextInput
                   style={styles.reviewInput}
-                  placeholder="Share your experience with this dish…"
-                  placeholderTextColor="#bbb"
+                  placeholder="Share your thoughts about this dish..."
+                  placeholderTextColor="#9ca3af"
                   multiline
-                  numberOfLines={3}
                   value={reviewText}
                   onChangeText={setReviewText}
-                  textAlignVertical="top"
                 />
                 <TouchableOpacity
-                  style={[styles.submitBtn, submitting && styles.submitBtnDisabled]}
+                  style={[styles.submitBtn, (!reviewText.trim() || submitting) && styles.submitBtnDisabled]}
                   onPress={submitReview}
-                  disabled={submitting}
+                  disabled={!reviewText.trim() || submitting}
                 >
                   <Text style={styles.submitBtnText}>
-                    {submitting ? 'Submitting…' : 'Submit Review'}
+                    {submitting ? 'Submitting...' : 'Post Review'}
                   </Text>
                 </TouchableOpacity>
               </View>
 
               {/* Reviews list */}
               {reviews.length === 0 ? (
-                <Text style={styles.noReviews}>No reviews yet. Be the first!</Text>
+                <View style={styles.emptyReviews}>
+                  <Text style={styles.emptyEmoji}>⭐</Text>
+                  <Text style={styles.emptyText}>No reviews yet. Be the first to share your experience!</Text>
+                </View>
               ) : (
-                reviews.map((r, i) => <ReviewCard key={i} review={r} />)
+                reviews.slice(0, 3).map((r, i) => <ReviewCard key={i} review={r} />)
               )}
             </View>
+            <View style={{ height: 120 }} />
           </View>
         </ScrollView>
+
+        {/* Floating Bottom Bar */}
+        <View style={[styles.bottomBar, { paddingBottom: insets.bottom > 0 ? insets.bottom + 10 : 20 }]}>
+          <View style={styles.priceContainer}>
+            <Text style={styles.bottomPrice}>${item.price}</Text>
+            <Text style={styles.taxLabel}>inclusive of all taxes</Text>
+          </View>
+          
+          {qty === 0 ? (
+            <TouchableOpacity style={styles.addMainBtn} onPress={handleAdd}>
+              <Text style={styles.addMainText}>ADD TO CART</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.mainCounter}>
+              <TouchableOpacity style={styles.counterAction} onPress={handleRemove}>
+                <Text style={styles.counterIcon}>−</Text>
+              </TouchableOpacity>
+              <Text style={styles.qtyNum}>{qty}</Text>
+              <TouchableOpacity style={styles.counterAction} onPress={handleAdd}>
+                <Text style={styles.counterIcon}>+</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safe:  { flex: 1, backgroundColor: '#fff' },
-  image: { width: '100%', height: 280 },
-  body:  { padding: 20 },
-
-  titleRow: {
-    flexDirection: 'row', justifyContent: 'space-between',
-    alignItems: 'flex-start', marginBottom: 6,
+  main: { flex: 1, backgroundColor: '#f9fafb' },
+  imageContainer: { height: 320, position: 'relative' },
+  image: { width: '100%', height: '100%' },
+  headerOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: Platform.OS === 'ios' ? 0 : 40,
   },
-  name:  { fontSize: 24, fontWeight: '700', color: '#262626', flex: 1, marginRight: 12 },
-  heart: { fontSize: 26 },
-
-  category: {
-    fontSize: 12, color: '#FF4C24', fontWeight: '700',
-    textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10,
+  roundBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  btnIcon: { fontSize: 20, color: '#fff', fontWeight: 'bold' },
 
-  ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 },
-  ratingValue: { fontSize: 16, fontWeight: '700', color: '#262626' },
-  ratingStars: { fontSize: 14, color: '#f59e0b' },
-  ratingCount: { fontSize: 13, color: '#9ca3af' },
-
-  description: { fontSize: 15, color: '#676767', lineHeight: 22, marginBottom: 16 },
-  price:       { fontSize: 28, fontWeight: '700', color: '#FF4C24', marginBottom: 24 },
-
-  actions: { alignItems: 'flex-start', marginBottom: 32 },
-  addBtn: {
-    backgroundColor: '#FF4C24', paddingVertical: 14,
-    paddingHorizontal: 36, borderRadius: 50,
-  },
-  addBtnText: { color: '#fff', fontWeight: '700', fontSize: 16 },
-  counter: {
-    flexDirection: 'row', alignItems: 'center',
-    borderWidth: 1.5, borderColor: '#FF4C24', borderRadius: 50, overflow: 'hidden',
-  },
-  counterBtn: { paddingVertical: 12, paddingHorizontal: 20 },
-  counterBtnText: { fontSize: 22, color: '#FF4C24', fontWeight: '700' },
-  qty: { fontSize: 18, fontWeight: '600', color: '#262626', paddingHorizontal: 12 },
-
-  /* Reviews */
-  reviewsSection: { borderTopWidth: 1, borderTopColor: '#f3f4f6', paddingTop: 24 },
-  reviewsTitle:   { fontSize: 18, fontWeight: '700', color: '#262626', marginBottom: 16 },
-
-  writeReview: {
-    backgroundColor: '#fafafa', borderRadius: 14,
-    padding: 16, marginBottom: 20,
-  },
-  writeLabel: { fontSize: 13, fontWeight: '600', color: '#49557E', marginBottom: 8 },
-
-  starRow:    { flexDirection: 'row', gap: 6, marginBottom: 14 },
-  star:       { fontSize: 28, color: '#d1d5db' },
-  starFilled: { color: '#f59e0b' },
-
-  reviewInput: {
-    borderWidth: 1.5, borderColor: '#e5e7eb', borderRadius: 10,
-    padding: 12, fontSize: 14, color: '#262626',
-    minHeight: 80, marginBottom: 14,
+  content: { marginTop: -30, paddingHorizontal: 16 },
+  mainCard: {
     backgroundColor: '#fff',
+    borderRadius: 24,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 8,
+    marginBottom: 24,
+  },
+  titleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  titleContent: { flex: 1 },
+  name: { fontSize: 24, fontWeight: '900', color: '#1a1a1a', marginBottom: 4 },
+  category: { fontSize: 14, fontWeight: '700', color: '#FF4C24', textTransform: 'uppercase' },
+  ratingBadge: { backgroundColor: '#2d7d32', padding: 8, borderRadius: 12, alignItems: 'center' },
+  ratingVal: { fontSize: 16, fontWeight: '900', color: '#fff' },
+  ratingTotal: { fontSize: 10, color: 'rgba(255,255,255,0.8)', fontWeight: '600', marginTop: 2 },
+  
+  divider: { height: 1, backgroundColor: '#f3f4f6', marginVertical: 16 },
+  
+  infoRow: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' },
+  infoItem: { alignItems: 'center' },
+  infoIcon: { fontSize: 18, marginBottom: 4 },
+  infoText: { fontSize: 12, fontWeight: '800', color: '#4b5563' },
+  infoDivider: { width: 1, height: 30, backgroundColor: '#f3f4f6' },
+
+  section: { marginBottom: 24 },
+  sectionTitle: { fontSize: 20, fontWeight: '900', color: '#1a1a1a', marginBottom: 12 },
+  description: { fontSize: 15, color: '#4b5563', lineHeight: 24, fontWeight: '500' },
+
+  reviewsContainer: {},
+  reviewsHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+  viewAll: { fontSize: 14, fontWeight: '800', color: '#FF4C24' },
+  
+  writeReviewCard: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
+  },
+  writeTitle: { fontSize: 15, fontWeight: '800', color: '#1a1a1a', marginBottom: 12 },
+  starRow: { flexDirection: 'row', marginBottom: 16 },
+  star: { fontSize: 32, color: '#e5e7eb', marginRight: 4 },
+  starFilled: { color: '#fbbf24' },
+  reviewInput: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 12,
+    padding: 12,
+    height: 80,
+    fontSize: 14,
+    color: '#1a1a1a',
+    textAlignVertical: 'top',
+    marginBottom: 16,
   },
   submitBtn: {
-    backgroundColor: '#FF4C24', borderRadius: 50,
-    padding: 12, alignItems: 'center',
+    backgroundColor: '#FF4C24',
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
   },
-  submitBtnDisabled: { opacity: 0.6 },
-  submitBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  submitBtnDisabled: { backgroundColor: '#fca5a5' },
+  submitBtnText: { color: '#fff', fontSize: 15, fontWeight: '800' },
 
   reviewCard: {
-    backgroundColor: '#fff4f2', borderRadius: 12,
-    padding: 14, marginBottom: 12,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
   },
-  reviewHeader: {
-    flexDirection: 'row', alignItems: 'center',
-    gap: 8, marginBottom: 6,
+  reviewHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
+  reviewAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#fef2f2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
-  reviewUser:  { fontSize: 13, fontWeight: '700', color: '#262626', flex: 1 },
-  reviewStars: { fontSize: 13, color: '#f59e0b' },
-  reviewDate:  { fontSize: 11, color: '#9ca3af' },
-  reviewText:  { fontSize: 13, color: '#374151', lineHeight: 20 },
-  noReviews:   { color: '#9ca3af', fontSize: 14, textAlign: 'center', marginTop: 8 },
+  avatarText: { color: '#FF4C24', fontWeight: 'bold' },
+  reviewInfo: { flex: 1 },
+  reviewUser: { fontSize: 14, fontWeight: '800', color: '#1a1a1a' },
+  reviewDate: { fontSize: 11, color: '#9ca3af', fontWeight: '600' },
+  reviewRatingBadge: {
+    backgroundColor: '#f3f4f6',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  badgeStars: { fontSize: 12, fontWeight: '800', color: '#2d7d32' },
+  reviewText: { fontSize: 14, color: '#4b5563', lineHeight: 20, fontWeight: '500' },
+
+  emptyReviews: { alignItems: 'center', padding: 24 },
+  emptyEmoji: { fontSize: 40, marginBottom: 8 },
+  emptyText: { textAlign: 'center', color: '#9ca3af', fontSize: 14, fontWeight: '600' },
+
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    paddingBottom: Platform.OS === 'ios' ? 34 : 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 20,
+  },
+  priceContainer: { flex: 1 },
+  bottomPrice: { fontSize: 24, fontWeight: '900', color: '#1a1a1a' },
+  taxLabel: { fontSize: 10, color: '#9ca3af', fontWeight: '700' },
+  addMainBtn: {
+    backgroundColor: '#FF4C24',
+    paddingHorizontal: 32,
+    height: 54,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#FF4C24',
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  addMainText: { color: '#fff', fontSize: 16, fontWeight: '900' },
+  mainCounter: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    height: 54,
+    width: 140,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1.5,
+    borderColor: '#FF4C24',
+  },
+  counterAction: {
+    flex: 1,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  counterIcon: { fontSize: 24, color: '#FF4C24', fontWeight: 'bold' },
+  qtyNum: { fontSize: 18, fontWeight: '900', color: '#1a1a1a' },
 });
 
 export default FoodDetailScreen;

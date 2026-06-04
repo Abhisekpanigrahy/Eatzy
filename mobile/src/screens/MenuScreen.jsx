@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import {
   FlatList,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CategoryPill from '../components/CategoryPill';
 import ErrorState from '../components/ErrorState';
 import FoodCard from '../components/FoodCard';
@@ -15,6 +15,7 @@ import { useFoods } from '../context/FoodContext';
 
 const MenuScreen = ({ navigation, route }) => {
   const { foods, loading, error, retryFetch } = useFoods();
+  const insets = useSafeAreaInsets();
 
   // Derive unique categories
   const categories = useMemo(() => {
@@ -37,7 +38,7 @@ const MenuScreen = ({ navigation, route }) => {
   if (error) return <ErrorState message={error} onRetry={retryFetch} />;
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.safe, { paddingTop: insets.top }]}>
       {/* Category filter bar */}
       <View style={styles.filterBar}>
         <ScrollView
@@ -64,11 +65,12 @@ const MenuScreen = ({ navigation, route }) => {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <Text style={styles.heading}>
-            {activeCategory === 'All' ? 'All Dishes' : activeCategory}
-            {'  '}
-            <Text style={styles.count}>({filteredFoods.length})</Text>
-          </Text>
+          <View style={styles.header}>
+            <Text style={styles.heading}>
+              {activeCategory === 'All' ? 'Explore Everything' : activeCategory}
+            </Text>
+            <Text style={styles.countText}>{filteredFoods.length} items found</Text>
+          </View>
         }
         ListEmptyComponent={
           <Text style={styles.empty}>No dishes in this category.</Text>
@@ -83,25 +85,38 @@ const MenuScreen = ({ navigation, route }) => {
           </View>
         )}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#FCFCFC' },
+  safe: { flex: 1, backgroundColor: '#FFF' },
   filterBar: {
     backgroundColor: '#fff',
+    paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-    paddingVertical: 10,
+    borderBottomColor: '#f3f4f6',
   },
   pills: { paddingHorizontal: 16 },
-  list: { padding: 16, paddingBottom: 32 },
-  heading: { fontSize: 20, fontWeight: '600', color: '#262626', marginBottom: 14 },
-  count: { fontSize: 15, fontWeight: '400', color: '#676767' },
+  list: { padding: 16, paddingBottom: 100 },
+  header: {
+    marginBottom: 20,
+  },
+  heading: { 
+    fontSize: 24, 
+    fontWeight: '900', 
+    color: '#1a1a1a', 
+    letterSpacing: -0.5,
+  },
+  countText: {
+    fontSize: 13,
+    color: '#9ca3af',
+    fontWeight: '600',
+    marginTop: 2,
+  },
   row: { justifyContent: 'space-between' },
   cardWrap: { width: '48%', marginBottom: 16 },
-  empty: { textAlign: 'center', color: '#676767', fontSize: 15, marginTop: 24 },
+  empty: { textAlign: 'center', color: '#6b7280', fontSize: 16, marginTop: 40, fontWeight: '600' },
 });
 
 export default MenuScreen;

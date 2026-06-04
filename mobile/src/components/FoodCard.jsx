@@ -24,7 +24,7 @@ const FoodCard = ({ item, onPress, onLoginRequired }) => {
   const handleRemove = () => removeFromCart(item._id);
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.95}>
       <View style={styles.imageWrapper}>
         <Image
           source={{ uri: getFoodImageUrl(item.image) }}
@@ -33,29 +33,44 @@ const FoodCard = ({ item, onPress, onLoginRequired }) => {
         />
         {/* Favorite toggle */}
         <TouchableOpacity style={styles.heartBtn} onPress={() => toggleFavorite(item._id)}>
-          <Text style={styles.heart}>{favorited ? '❤️' : '🤍'}</Text>
-        </TouchableOpacity>
-        {/* Add / quantity counter */}
-        {qty === 0 ? (
-          <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
-            <Text style={styles.addBtnText}>+</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.counter}>
-            <TouchableOpacity onPress={handleRemove}>
-              <Text style={styles.counterBtn}>−</Text>
-            </TouchableOpacity>
-            <Text style={styles.counterQty}>{qty}</Text>
-            <TouchableOpacity onPress={handleAdd}>
-              <Text style={styles.counterBtn}>+</Text>
-            </TouchableOpacity>
+          <View style={styles.heartCircle}>
+            <Text style={styles.heart}>{favorited ? '❤️' : '🤍'}</Text>
           </View>
-        )}
+        </TouchableOpacity>
+        
+        {/* Rating Badge */}
+        <View style={styles.ratingBadge}>
+          <Text style={styles.ratingText}>4.2 ★</Text>
+        </View>
+
+        {/* Add / quantity counter */}
+        <View style={styles.actionContainer}>
+          {qty === 0 ? (
+            <TouchableOpacity style={styles.addBtn} onPress={handleAdd}>
+              <Text style={styles.addBtnText}>ADD</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.counter}>
+              <TouchableOpacity onPress={handleRemove} style={styles.counterAction}>
+                <Text style={styles.counterBtn}>−</Text>
+              </TouchableOpacity>
+              <Text style={styles.counterQty}>{qty}</Text>
+              <TouchableOpacity onPress={handleAdd} style={styles.counterAction}>
+                <Text style={styles.counterBtn}>+</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
       </View>
       <View style={styles.info}>
-        <Text style={styles.name} numberOfLines={1}>{item.name}</Text>
+        <View style={styles.nameRow}>
+          <Text style={styles.name} numberOfLines={1}>{item.name}</Text>
+        </View>
         <Text style={styles.desc} numberOfLines={1}>{item.description}</Text>
-        <Text style={styles.price}>${item.price}</Text>
+        <View style={styles.priceRow}>
+          <Text style={styles.price}>${item.price}</Text>
+          <Text style={styles.timeText}>• 25 mins</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -64,91 +79,142 @@ const FoodCard = ({ item, onPress, onLoginRequired }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 15,
+    borderRadius: 18,
     overflow: 'hidden',
     shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+    marginBottom: 8,
   },
   imageWrapper: {
     position: 'relative',
+    height: 150,
   },
   image: {
     width: '100%',
-    height: 160,
+    height: '100%',
   },
   heartBtn: {
     position: 'absolute',
-    top: 10,
-    left: 10,
+    top: 8,
+    right: 8,
   },
-  heart: {
-    fontSize: 22,
-  },
-  addBtn: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10,
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: '#FF4C24',
+  heartCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.9)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  addBtnText: {
-    color: '#fff',
-    fontSize: 20,
-    lineHeight: 22,
-    fontWeight: '700',
+  heart: {
+    fontSize: 16,
   },
-  counter: {
+  ratingBadge: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 20,
+    bottom: 8,
+    left: 8,
+    backgroundColor: '#2d7d32',
     paddingHorizontal: 6,
-    paddingVertical: 3,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
+  ratingText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '800',
+  },
+  actionContainer: {
+    position: 'absolute',
+    bottom: -12,
+    alignSelf: 'center',
+    width: '70%',
+  },
+  addBtn: {
+    backgroundColor: '#fff',
+    height: 32,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 3,
+  },
+  addBtnText: {
+    color: '#FF4C24',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  counter: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    height: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  counterAction: {
+    width: 30,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   counterBtn: {
-    fontSize: 18,
-    paddingHorizontal: 6,
     color: '#FF4C24',
+    fontSize: 18,
     fontWeight: '700',
   },
   counterQty: {
     fontSize: 14,
-    fontWeight: '600',
-    minWidth: 18,
-    textAlign: 'center',
+    fontWeight: '800',
+    color: '#2d2d2d',
   },
   info: {
     padding: 12,
+    paddingTop: 18,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 2,
   },
   name: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#262626',
-    marginBottom: 4,
+    fontWeight: '800',
+    color: '#1a1a1a',
+    flex: 1,
   },
   desc: {
     fontSize: 12,
-    color: '#676767',
+    color: '#6b7280',
     marginBottom: 6,
   },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   price: {
-    fontSize: 18,
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#2d2d2d',
+  },
+  timeText: {
+    fontSize: 11,
+    color: '#9ca3af',
+    marginLeft: 4,
     fontWeight: '600',
-    color: '#FF4C24',
   },
 });
 

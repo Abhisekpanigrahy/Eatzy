@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import LoadingSpinner from '../components/LoadingSpinner';
+import React, { useEffect, useState } from 'react';
+import StartupSplashScreen from '../components/StartupSplashScreen';
 import { useAuth } from '../context/AuthContext';
 import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -12,8 +12,19 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
   const { loading, token } = useAuth();
+  const [isAppLoading, setIsAppLoading] = useState(true);
 
-  if (loading) return <LoadingSpinner />;
+  useEffect(() => {
+    // Show splash screen for 2.5 seconds to build brand premium feel
+    const timer = setTimeout(() => {
+      setIsAppLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading || isAppLoading) {
+    return <StartupSplashScreen />;
+  }
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

@@ -45,7 +45,6 @@ const Navbar = () => {
     if (path === '/mobile-app' && location.pathname === '/mobile-app') return "active";
     if (path === '/contact-us' && location.pathname === '/contact-us') return "active";
     if (path === '/about' && location.pathname === '/about') return "active";
-    if (path === '/delivery' && location.pathname === '/delivery') return "active";
     return "";
   }
 
@@ -67,7 +66,6 @@ const Navbar = () => {
         <Link to="/" className={isActive('/')}>home</Link>
         <Link to="/menu" className={isActive('/menu')}>menu</Link>
         <Link to="/about" className={isActive('/about')}>about</Link>
-        <Link to="/delivery" className={isActive('/delivery')}>delivery</Link>
         <Link to="/mobile-app" className={isActive('/mobile-app')}>mobile app</Link>
         <Link to="/contact-us" className={isActive('/contact-us')}>contact us</Link>
         <a href={import.meta.env.VITE_ADMIN_URL || "http://localhost:5174"} target='_blank' rel='noreferrer' className="navbar-admin-btn">admin panel</a>
@@ -82,7 +80,7 @@ const Navbar = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearch}
           />
-          <img src={assets.search_icon} onClick={() => setShowSearch(!showSearch)} alt="" />
+          <img src={assets.search_icon} onClick={() => navigate('/menu')} alt="" />
 
           {searchQuery && (
             <div className="search-results-dropdown">

@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './Menu.css'
 import { StoreContext } from '../../Context/StoreContext'
 import FoodItem from '../../components/FoodItem/FoodItem'
@@ -10,6 +10,7 @@ const Menu = () => {
     const navigate = useNavigate();
     const { search } = useLocation();
     const { food_list, menu_list } = useContext(StoreContext);
+    const searchInputRef = useRef(null);
 
     const [category, setCategory] = useState(paramCategory || "All");
     const [sortOrder, setSortOrder] = useState("default");
@@ -25,6 +26,9 @@ const Menu = () => {
         const searchParam = queryParams.get('search');
         if (searchParam) {
             setSearchQuery(searchParam);
+        } else {
+            // Focus the search input if navigating from navbar search icon
+            searchInputRef.current?.focus();
         }
     }, [search]);
 
@@ -80,6 +84,7 @@ const Menu = () => {
                 <div className="filter-controls">
                     <div className="search-box">
                         <input
+                            ref={searchInputRef}
                             type="text"
                             placeholder="Search for dish..."
                             value={searchQuery}

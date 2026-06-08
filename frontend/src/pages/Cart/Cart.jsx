@@ -8,6 +8,19 @@ const Cart = () => {
   const { cartItems = {}, food_list, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
   const navigate = useNavigate();
 
+  if (getTotalCartAmount() === 0) {
+    return (
+      <div className='cart-empty'>
+        <div className='cart-empty-content'>
+          <img src={assets.basket_icon} alt="Empty Cart" />
+          <h2>Your cart is empty</h2>
+          <p>Add some delicious food to your cart and satisfy your cravings!</p>
+          <button onClick={() => navigate('/menu')}>Browse Menu</button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className='cart'>
       <div className="cart-items">

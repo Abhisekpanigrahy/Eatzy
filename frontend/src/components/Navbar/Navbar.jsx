@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -9,6 +9,7 @@ const Navbar = () => {
   const { getTotalCartAmount, token, setToken, setShowLogin, food_list, url } = useContext(StoreContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const profileRef = useRef(null);
 
   const isHomePage = location.pathname === '/';
 
@@ -21,11 +22,24 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   // Close mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
+    setShowProfileDropdown(false);
   }, [location.pathname]);
+
+  // Handle click outside for profile dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const filteredSearch = food_list.filter(item =>
     searchQuery && item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -114,12 +128,17 @@ const Navbar = () => {
           <div className={getTotalCartAmount() > 0 ? "dot" : ""}></div>
         </Link>
         {!token ? <button onClick={() => setShowLogin(true)}>sign in</button>
-          : <div className='navbar-profile'>
-            <img src={assets.profile_icon} alt="" />
-            <ul className='navbar-profile-dropdown'>
-              <li onClick={() => navigate('/profile')}> <img src={assets.profile_icon} alt="" /> <p>Profile</p></li>
+          : <div className='navbar-profile' ref={profileRef}>
+            <img 
+              src={assets.profile_icon} 
+              alt="" 
+              onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+              style={{cursor: 'pointer'}}
+            />
+            <ul className={`navbar-profile-dropdown ${showProfileDropdown ? 'active' : ''}`}>
+              <li onClick={() => {navigate('/profile'); setShowProfileDropdown(false)}}> <img src={assets.profile_icon} alt="" /> <p>Profile</p></li>
               <hr />
-              <li onClick={() => navigate('/myorders')}> <img src={assets.bag_icon} alt="" /> <p>Orders</p></li>
+              <li onClick={() => {navigate('/myorders'); setShowProfileDropdown(false)}}> <img src={assets.bag_icon} alt="" /> <p>Orders</p></li>
               <hr />
               <li onClick={logout}> <img src={assets.logout_icon} alt="" /> <p>Logout</p></li>
             </ul>

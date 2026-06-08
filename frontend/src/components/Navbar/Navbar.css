@@ -25,11 +25,17 @@
 
 .navbar-back {
     cursor: pointer;
-    display: flex;
+    display: none; /* Hidden by default on desktop */
     align-items: center;
     justify-content: center;
     padding: 5px;
     transition: transform 0.2s;
+}
+
+@media (max-width: 750px) {
+    .navbar-back {
+        display: flex; /* Only show on mobile */
+    }
 }
 
 .navbar-back:hover {
@@ -243,6 +249,21 @@
     display: none;
     right: 0;
     z-index: 1;
+    top: 40px; /* Adjust as needed */
+}
+
+.navbar-profile-dropdown.active {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff2ef;
+    padding: 12px 25px;
+    border-radius: 4px;
+    border: 1px solid tomato;
+    outline: 2px solid white;
+    list-style: none;
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .navbar-profile-dropdown li {
@@ -258,18 +279,6 @@
 
 .navbar-profile-dropdown li:hover {
     color: #FF4C24;
-}
-
-.navbar-profile:hover .navbar-profile-dropdown {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fff2ef;
-    padding: 12px 25px;
-    border-radius: 4px;
-    border: 1px solid tomato;
-    outline: 2px solid white;
-    list-style: none;
 }
 
 .navbar-profile hr {

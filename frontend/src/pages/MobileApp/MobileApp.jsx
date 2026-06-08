@@ -196,7 +196,9 @@ const MobileApp = () => {
                 </div>
 
                 <div className="app-download-platforms" style={{ marginTop: '40px', display: 'flex', gap: '20px' }}>
-                    <img src={assets.play_store} alt="" style={{ width: '160px' }} />
+                    <a href="/eatzy.apk" download="eatzy.apk">
+                        <img src={assets.play_store} alt="Get it on Play Store" style={{ width: '160px', cursor: 'pointer' }} />
+                    </a>
                     <img src={assets.app_store} alt="" style={{ width: '160px' }} />
                 </div>
             </div>

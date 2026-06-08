@@ -1,5 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 // Show alerts in foreground
 Notifications.setNotificationHandler({
@@ -10,19 +11,36 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const PERMISSION_ASKED_KEY = 'notif_permission_asked';
-
 /**
- * Request notification permissions once per install.
- * Guards with an AsyncStorage flag so we only prompt once.
+ * Request notification permissions.
+ * Checks current status and prompts if not yet granted.
  */
 export const requestPermissionsIfNeeded = async () => {
   try {
-    const asked = await AsyncStorage.getItem(PERMISSION_ASKED_KEY);
-    if (asked) return;
-    const { status } = await Notifications.requestPermissionsAsync();
-    await AsyncStorage.setItem(PERMISSION_ASKED_KEY, 'true');
-    return status === 'granted';
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    
+    if (finalStatus !== 'granted') {
+      console.log('[NotificationService] Permission not granted');
+      return false;
+    }
+
+    // On Android, we need a channel for notifications to show up correctly
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    return true;
   } catch (e) {
     console.error('[NotificationService] requestPermissionsIfNeeded error:', e);
   }
@@ -39,6 +57,8 @@ export const scheduleStatusNotification = async (orderId, newStatus) => {
       content: {
         title: '🍔 Order Update',
         body: `Order #${orderId.slice(-6).toUpperCase()}: ${newStatus}`,
+        data: { orderId },
+        sound: 'default',
       },
       trigger: null, // deliver immediately
     });

@@ -230,7 +230,7 @@ const FoodDetailScreen = ({ route, navigation }) => {
         </ScrollView>
 
         {/* Floating Bottom Bar */}
-        <View style={[styles.bottomBar, { paddingBottom: insets.bottom > 0 ? insets.bottom : 16 }]}>
+        <View style={[styles.bottomBar, { paddingBottom: insets.bottom > 0 ? insets.bottom : 12 }]}>
           <View style={styles.priceContainer}>
             <Text style={styles.bottomPrice}>${item.price}</Text>
             <Text style={styles.taxLabel}>inclusive of all taxes</Text>
@@ -430,8 +430,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 34 : 20,
+    padding: 16,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     shadowColor: '#000',

@@ -3,8 +3,23 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 import userModel from "../models/userModel.js";
 import nodemailer from "nodemailer";
+import { v2 as cloudinary } from "cloudinary";
 
 const createToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+
+// helper: upload buffer to Cloudinary
+const uploadToCloudinary = async (file) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            { folder: "eatzy/profiles", resource_type: "image" },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result.secure_url);
+            }
+        );
+        stream.end(file.buffer);
+    });
+};
 
 // In-memory OTP store { email -> { otp, expiresAt } }
 const otpStore = new Map();
@@ -160,7 +175,14 @@ const getUserProfile = async (req, res) => {
 const updateUserProfile = async (req, res) => {
     try {
         const { name, phone, address } = req.body;
-        await userModel.findByIdAndUpdate(req.body.userId, { name, phone, address });
+        const updateData = { name, phone, address };
+
+        if (req.file) {
+            const imageUrl = await uploadToCloudinary(req.file);
+            updateData.image = imageUrl;
+        }
+
+        await userModel.findByIdAndUpdate(req.body.userId, updateData);
         res.json({ success: true, message: "Profile updated" });
     } catch (error) {
         console.error(error);

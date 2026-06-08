@@ -136,7 +136,8 @@ const ProfileScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.error('Update profile error:', err);
-      Alert.alert('Error', 'Failed to update profile');
+      const msg = err.response?.data?.message || 'Failed to update profile. Please try again later.';
+      Alert.alert('Error', msg);
     } finally {
       setSaving(false);
     }

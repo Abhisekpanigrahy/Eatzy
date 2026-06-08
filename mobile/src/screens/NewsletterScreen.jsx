@@ -29,8 +29,10 @@ const NewsletterScreen = ({ navigation }) => {
       } else {
         Alert.alert('Notice', res.data.message || 'Already subscribed!');
       }
-    } catch {
-      Alert.alert('Error', 'Failed to subscribe. Please try again.');
+    } catch (err) {
+      console.error('Subscription error:', err);
+      const msg = err.response?.data?.message || 'Failed to subscribe. Please check your connection and try again.';
+      Alert.alert('Error', msg);
     } finally {
       setLoading(false);
     }

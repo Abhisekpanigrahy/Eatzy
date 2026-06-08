@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
       if (stored) {
         setTokenState(stored);
         OrderPollingService.start();
+        requestPermissionsIfNeeded(); // Request permissions even on restore
       }
       setLoading(false);
     };

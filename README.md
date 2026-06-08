@@ -1,81 +1,106 @@
- Eatzy: A Food Delivery App
+# 🍕 Eatzy - Full Stack Food Delivery Platform
 
-Eatzy is a full-featured, responsive food delivery application built using the MERN stack (MongoDB, Express, React, Node.js) with Stripe payment integration. This project delivers a seamless experience for customers, administrators, and delivery personnel, combining a user-friendly frontend, a robust backend, and an intuitive admin panel into a single, comprehensive platform. 
+Eatzy is a premium, full-featured MERN stack application designed to provide a seamless food ordering experience. It features a beautiful, responsive user interface, a powerful admin dashboard, and a secure backend with Stripe payment integration.
 
- Features
+---
 
- Customer Interface (Frontend)
-- Responsive Design: Developed with React, Eatzy offers a fully responsive interface that adapts to various devices, from desktops to mobile screens, ensuring an optimized user experience.
-- User Authentication: Secure user login and registration using JSON Web Tokens (JWT) to manage sessions and protect user data.
-- Browse and Search: Users can browse restaurants, view menus, and search for food items by category, popularity, or dietary preference.
-- Order Management: Customers can place orders, select their preferred delivery address, and track the status of their orders in real-time.
-- Payment Integration: With Stripe integrated, users can make secure, hassle-free payments directly within the app.
-  
- Admin Panel
-- User Management: Admins can view and manage user accounts, including customer and delivery personnel information.
-- Menu and Restaurant Management: Easily add, edit, and delete food items, categories, and restaurant details to keep the offerings up to date.
-- Order Tracking: Real-time monitoring of active and past orders, with controls to update the order status (e.g., received, in-progress, completed, delivered).
-- Analytics: Track key metrics like popular items, order frequency, and user activity to make informed decisions and improve services.
+## 🌟 Key Features
 
- Backend (Server)
-- API Development: Built with Express, the backend provides RESTful APIs to handle requests, manage authentication, and connect the frontend and admin panel to the MongoDB database.
-- Data Storage: MongoDB is used for storing user profiles, order details, restaurant data, and menu items in a scalable and efficient manner.
-- Real-Time Updates: With WebSockets, users receive live updates on their order status from the moment they place it until delivery.
-- Security: Data protection and secure endpoints, with encrypted user information and secure payment processing via Stripe.
+### 🛒 Customer Experience (Frontend)
+- **Responsive UI**: Pixel-perfect design optimized for Desktop, Tablet, and Mobile.
+- **Smart Search & Filters**: Quickly find dishes by name or category with real-time filtering.
+- **Advanced Auth**: Secure JWT-based login/registration with **OTP-based Password Reset**.
+- **Wishlist & Cart**: Manage favorite dishes and track orders with a persistent shopping cart.
+- **Stripe Payments**: Securely process credit card transactions or choose Cash on Delivery (COD).
+- **Mobile Optimized**: Mobile-first design with a dedicated app download section for the Eatzy APK.
 
- Technology Stack
-- Frontend: React, CSS3, Bootstrap/Material UI for styling, and Stripe integration for payment processing.
-- Backend: Node.js with Express.js, and WebSockets for real-time updates.
-- Database: MongoDB for efficient, scalable data storage.
-- Payment Integration: Stripe for secure and seamless payment processing.
+### 🛠️ Admin Dashboard
+- **Inventory Control**: Add, edit, and remove dishes with image upload support via Cloudinary.
+- **Order Management**: Real-time order tracking and status updates (Processing → Out for delivery → Delivered).
+- **User Analytics**: Overview of registered users and order history.
+- **Modern UI**: Clean, intuitive interface for effortless management.
 
- Getting Started
-1. Clone the Repository: `git clone <repo-url>`
-2. Install Dependencies: 
-   ```bash
-   cd client
-   npm install
-   cd ../server
-   npm install
-   ```
-3. Set Up Environment Variables: Add environment variables for MongoDB, Stripe keys, and JWT secrets in a `.env` file.
-4. Run the Application:
-   - Start the client: `npm start` from the client folder.
-   - Start the server: `npm start` from the server folder.
+### 🔐 Backend & Security
+- **RESTful API**: Scalable architecture built with Express and Node.js.
+- **Database**: MongoDB for flexible and efficient data storage.
+- **Image Hosting**: Cloudinary integration for optimized asset management.
+- **Security**: Password hashing with Bcrypt and protected routes via middleware.
 
- Project Structure
+---
+
+## 🚀 Technology Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React.js, Vite, React Router, React Toastify, Axios |
+| **Backend** | Node.js, Express.js, JWT, Bcrypt |
+| **Database** | MongoDB with Mongoose ODM |
+| **Payments** | Stripe API |
+| **Storage** | Cloudinary (Images), Local Storage (Tokens) |
+
+---
+
+## 🛠️ Installation & Setup
+
+### 1. Clone the Repository
 ```bash
-Eatzy/
-│
-├── client/                  # Frontend code (React)
-│   ├── public/
-│   ├── src/
-│       ├── components/
-│       ├── pages/
-│       └── utils/
-│
-├── server/                  # Backend code (Node.js, Express)
-│   ├── config/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   └── middleware/
-│
-├── admin/                   # Admin panel (React, can be separate or part of client)
-│   ├── components/
-│   └── pages/
-│
-├── .env                     # Environment variables
-├── README.md
-└── package.json
+git clone https://github.com/your-username/eatzy-food-delivery.git
+cd eatzy-food-delivery
 ```
 
- Future Enhancements
-- Push Notifications: Notify users about order updates and special offers.
-- Advanced Analytics: Provide deeper insights for restaurant and admin users.
-- Multi-Language Support: Make the app accessible to a broader audience by adding multiple languages.
+### 2. Backend Setup
+```bash
+cd backend
+npm install
+```
+Create a `.env` file in the `backend` folder:
+```env
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+STRIPE_SECRET_KEY=your_stripe_key
+CLOUDINARY_CLOUD_NAME=name
+CLOUDINARY_API_KEY=key
+CLOUDINARY_API_SECRET=secret
+```
 
- Contribution Guidelines
-Feel free to contribute to Eatzy by forking this repository, creating a new branch, and submitting a pull request. Please make sure to follow standard coding practices and add meaningful comments to your code.
+### 3. Frontend Setup
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
 
-Enjoy exploring the code and features of Eatzy, and feel free to reach out for any questions or suggestions!
+### 4. Admin Setup
+```bash
+cd ../admin
+npm install
+npm run dev
+```
+
+---
+
+## 📱 Mobile App (Android)
+Eatzy is also available as a mobile application. You can download the latest APK directly from the website's "Mobile App" section or by clicking "Get it on Play Store" in the footer.
+
+---
+
+## 📂 Project Structure
+```text
+Eatzy/
+├── frontend/     # Customer React application (Vite)
+├── admin/        # Admin dashboard (React)
+├── backend/      # Express API & Database models
+├── mobile/       # React Native / Expo mobile application
+└── README.md
+```
+
+---
+
+## 📄 License
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 🤝 Contact
+Abhishek Panigrahy - [Your Email/Portfolio] - [LinkedIn]
+
+---
+*Built with ❤️ for a better dining experience.*

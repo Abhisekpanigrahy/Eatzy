@@ -77,12 +77,12 @@ const Navbar = () => {
       {menuOpen && <div className="navbar-overlay" onClick={() => setMenuOpen(false)} />}
 
       <ul className={`navbar-menu ${menuOpen ? "navbar-menu-open" : ""}`}>
-        <Link to="/" className={isActive('/')}>home</Link>
-        <Link to="/menu" className={isActive('/menu')}>menu</Link>
-        <Link to="/about" className={isActive('/about')}>about</Link>
-        <Link to="/mobile-app" className={isActive('/mobile-app')}>mobile app</Link>
-        <Link to="/contact-us" className={isActive('/contact-us')}>contact us</Link>
-        <a href={import.meta.env.VITE_ADMIN_URL || "http://localhost:5174"} target='_blank' rel='noreferrer' className="navbar-admin-btn">admin panel</a>
+        <Link to="/" className={isActive('/')}>Home</Link>
+        <Link to="/menu" className={isActive('/menu')}>Menu</Link>
+        <Link to="/about" className={isActive('/about')}>About</Link>
+        <Link to="/mobile-app" className={isActive('/mobile-app')}>Mobile App</Link>
+        <Link to="/contact-us" className={isActive('/contact-us')}>Contact Us</Link>
+        <a href={import.meta.env.VITE_ADMIN_URL || "http://localhost:5174"} target='_blank' rel='noreferrer' className="navbar-admin-btn">Admin Panel</a>
       </ul>
 
       <div className="navbar-right">

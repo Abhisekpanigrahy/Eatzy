@@ -65,11 +65,6 @@ const Navbar = () => {
   return (
     <div className='navbar'>
       <div className="navbar-left">
-        {!isHomePage && (
-          <div className="navbar-back" onClick={() => navigate(-1)} title="Go Back">
-            <div className="wide-back-arrow"></div>
-          </div>
-        )}
         <Link to='/' className='logo'>Eatzy<span>.</span></Link>
       </div>
 

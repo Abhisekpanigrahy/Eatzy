@@ -3,12 +3,14 @@ import './MyOrders.css'
 import axios from 'axios'
 import { StoreContext } from '../../Context/StoreContext'
 import { assets } from '../../assets/assets'
+import { useNavigate } from 'react-router-dom'
 
 const STATUS_STEPS = ['Food Processing', 'Out for delivery', 'Delivered']
 
 const MyOrders = () => {
   const [data, setData] = useState([])
   const { url, token } = useContext(StoreContext)
+  const navigate = useNavigate()
 
   const fetchOrders = async () => {
     const response = await axios.post(
@@ -74,7 +76,7 @@ const MyOrders = () => {
               })}
             </div>
 
-            <button onClick={fetchOrders}>Track Order</button>
+            <button onClick={() => navigate(`/track-order/${order._id}`)}>Track Order</button>
           </div>
         ))}
       </div>

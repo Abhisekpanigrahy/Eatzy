@@ -12,6 +12,7 @@ import MyOrders from './pages/MyOrders/MyOrders'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Verify from './pages/Verify/Verify'
+import TrackOrder from './pages/Verify/TrackOrder'
 import Menu from './pages/Menu/Menu'
 import MobileApp from './pages/MobileApp/MobileApp'
 import ContactUs from './pages/ContactUs/ContactUs'
@@ -39,6 +40,7 @@ const App = () => {
           <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<PlaceOrder />} />
           <Route path='/myorders' element={<MyOrders />} />
+          <Route path='/track-order/:id' element={<TrackOrder />} />
           <Route path='/verify' element={<Verify />} />
           <Route path='/about' element={<About />} />
           <Route path='/delivery' element={<Delivery />} />

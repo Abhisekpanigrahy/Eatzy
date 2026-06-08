@@ -79,12 +79,7 @@ npm run dev
 
 ---
 
-## 📱 Mobile App (Android)
-Eatzy is also available as a mobile application. You can download the latest APK directly from the website's "Mobile App" section or by clicking "Get it on Play Store" in the footer.
-
----
-
-## 📂 Project Structure
+##  Project Structure
 ```text
 Eatzy/
 ├── frontend/     # Customer React application (Vite)

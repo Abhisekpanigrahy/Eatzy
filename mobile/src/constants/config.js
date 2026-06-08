@@ -18,21 +18,31 @@ function getDevServerHost() {
   return host || null;
 }
 
+function getConfiguredApiUrl() {
+  const fromEnv = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
+  if (fromEnv) return fromEnv.replace(/\/$/, '');
+
+  const fromExtra = Constants.expoConfig?.extra?.apiBaseUrl?.trim();
+  if (fromExtra) return fromExtra.replace(/\/$/, '');
+
+  return null;
+}
+
 function resolveBaseUrl() {
-  // In dev, prefer Metro's host so a stale .env IP does not break login on device.
+  const configured = getConfiguredApiUrl();
+  if (configured) return configured;
+
+  // Local dev only — when no API URL is set in .env
   if (typeof __DEV__ !== 'undefined' && __DEV__) {
     const devHost = getDevServerHost();
     if (devHost) return `http://${devHost}:4000`;
   }
-
-  const envUrl = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
-  if (envUrl) return envUrl.replace(/\/$/, '');
 
   if (Platform.OS === 'android') return 'http://10.0.2.2:4000';
   return 'http://localhost:4000';
 }
 
 /**
- * API origin. Override with EXPO_PUBLIC_API_BASE_URL in mobile/.env for production builds.
+ * API origin. Set EXPO_PUBLIC_API_BASE_URL in mobile/.env before building the APK.
  */
 export const BASE_URL = resolveBaseUrl();

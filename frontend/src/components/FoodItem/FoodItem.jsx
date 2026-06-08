@@ -22,6 +22,7 @@ const FoodItem = ({ image, name, price, desc, id }) => {
                     alt={name}
                     onClick={() => navigate(`/food/${id}`)}
                     style={{ cursor: 'pointer' }}
+                    loading="eager"
                 />
                 {!cart[id]
                     ? <img className='add' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" />

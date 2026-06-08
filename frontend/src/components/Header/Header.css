@@ -19,7 +19,7 @@
     max-width: 60%;
     bottom: 15%;
     left: 6vw;
-    animation: fadeIn 1.5s ease-out;
+    animation: fadeIn 0.5s ease-out;
 }
 
 .header-contents h2 {

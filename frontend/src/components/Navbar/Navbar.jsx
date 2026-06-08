@@ -10,6 +10,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isHomePage = location.pathname === '/';
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
@@ -49,19 +51,14 @@ const Navbar = () => {
 
   return (
     <div className='navbar'>
-      <Link to='/' className='logo'>Eatzy<span>.</span></Link>
-
-      {/* Hamburger button – visible only on mobile */}
-      <button
-        className={`navbar-hamburger ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Toggle navigation menu"
-        aria-expanded={menuOpen}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div className="navbar-left">
+        {!isHomePage && (
+          <div className="navbar-back" onClick={() => navigate(-1)} title="Go Back">
+            <div className="wide-back-arrow"></div>
+          </div>
+        )}
+        <Link to='/' className='logo'>Eatzy<span>.</span></Link>
+      </div>
 
       {/* Mobile overlay */}
       {menuOpen && <div className="navbar-overlay" onClick={() => setMenuOpen(false)} />}
@@ -75,6 +72,7 @@ const Navbar = () => {
         <Link to="/contact-us" className={isActive('/contact-us')}>contact us</Link>
         <a href={import.meta.env.VITE_ADMIN_URL || "http://localhost:5174"} target='_blank' rel='noreferrer' className="navbar-admin-btn">admin panel</a>
       </ul>
+
       <div className="navbar-right">
         <div className={`navbar-search-container ${showSearch ? "active" : ""}`}>
           <input
@@ -129,8 +127,19 @@ const Navbar = () => {
             </ul>
           </div>
         }
-
       </div>
+
+      {/* Hamburger button – visible only on mobile */}
+      <button
+        className={`navbar-hamburger ${menuOpen ? "open" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle navigation menu"
+        aria-expanded={menuOpen}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   )
 }
